@@ -1,0 +1,9 @@
+node_modules
+.editorconfig
+.eslintignore
+.eslintrc.json
+.docker-compose.yml
+LICENSE
+prettier.config.json
+.gitignore
+.github
