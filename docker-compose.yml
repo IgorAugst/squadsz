@@ -8,5 +8,14 @@ services:
     restart: always
     env_file: .env
 
+  api:
+    image: node
+    command: sh -c "npm install && npm start"
+    ports:
+      - 3000:3000
+    working_dir: /app
+    volumes: 
+      - ./:/app
+
 volumes: 
   postgres_data:
