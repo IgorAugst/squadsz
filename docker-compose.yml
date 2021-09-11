@@ -1,9 +1,9 @@
 services:
   database:
     image: postgres
-    ports: 
+    ports:
       - 5432:5432
-    volumes: 
+    volumes:
       - postgres_data:/var/lib/postgresql/data
     restart: always
     env_file: .env
@@ -12,10 +12,11 @@ services:
     image: node
     command: sh -c "npm start"
     ports:
-      - 3000:3000
+      - '${PORT}:${PORT}'
     working_dir: /app
-    volumes: 
+    volumes:
       - ./:/app
+    env_file: .env
 
-volumes: 
+volumes:
   postgres_data:
