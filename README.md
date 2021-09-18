@@ -27,9 +27,9 @@ This is one of the repositories of the [Reactive Survey](https://github.com/Igor
 ## 🚀 Technologies
 
 - ✔️ Node
-- ✔️ TypeScript
 - ✔️ PostgreSQL
 - ✔️ Docker
+- ✔️ Docker compose
 
 <!-- HOW TO USE -->
 
@@ -47,7 +47,7 @@ If you want to set the environment variables, create a `.env` file based on the 
 
 ### Installation
 
-To modify (locally) this project, you will need [Node](https://nodejs.org/en/) and [GIT](https://git-scm.com/) installed on your computer.
+To modify (locally) this project, you will need [Node](https://nodejs.org/en/), [GIT](https://git-scm.com/) and [docker-compose](https://docs.docker.com/compose/) installed on your computer.
 
 With these tools in hand, follow the steps below
 
@@ -59,13 +59,37 @@ $ git clone https://github.com/IgorSantoss/reactive-survey-server
 $ cd reactive-survey-server
 
 # Install dependencies
-$ yarn
+$ make install
 
 # Start server
-$ yarn start
+$ make up
 ```
 
 Done! Now you have this application in your computer.
+
+### Commands
+```sh
+# Install dependencies
+$ make install
+
+# Build image
+$ make build
+
+# Start docker
+$ make up
+
+# Stop docker
+$ make down
+
+# Restart docker
+$ make restart
+
+# See logs
+$ make logs
+
+# Compile scss files in real time
+$ make dev
+```
 
 <!-- CONTRIBUTING -->
 

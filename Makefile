@@ -1,4 +1,7 @@
-.PHONY: build up down restart logs
+.PHONY: install build up down restart logs
+
+install:
+	npm install
 
 build:
 	docker build .
@@ -14,3 +17,6 @@ restart:
 
 logs:
 	docker-compose logs
+
+dev:
+	yarn gulp watch
