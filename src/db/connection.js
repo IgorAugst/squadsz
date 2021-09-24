@@ -1,14 +1,16 @@
-import pg from 'pg';
-import config from './config.js'
+const pg = require('pg');
+const config = require('./config');
 
-const { database, host, password, port, user } = config;
+const {
+  database, host, password, port, user,
+} = config;
 
 const pool = new pg.Pool({
   user,
   host,
   database,
   password,
-  port
-})
+  port,
+});
 
-export default pool;
+module.exports = pool;

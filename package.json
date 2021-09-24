@@ -2,8 +2,8 @@
   "name": "nlw-valoriza",
   "version": "1.0.0",
   "main": "index.js",
-  "type": "module",
   "license": "MIT",
+  "type": "commonjs",
   "devDependencies": {
     "eslint": "^7.32.0",
     "eslint-config-airbnb-base": "^14.2.1",
@@ -14,7 +14,7 @@
     "gulp": "^4.0.2",
     "gulp-sass": "^5.0.0",
     "nodemon": "^2.0.12",
-    "prettier": "^2.3.2"
+    "prettier": "^2.4.1"
   },
   "scripts": {
     "start": "node src/server.js"

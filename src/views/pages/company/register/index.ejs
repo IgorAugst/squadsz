@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Login Template</title>
+  <link href="https://fonts.googleapis.com/css?family=Karla:400,700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="public/styles/custom.css">
+  <link rel="stylesheet" href="public/styles/pages/login/style.css">
+</head>
+<body>
+  <main>
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-sm-6 login-section-wrapper">
+          <div class="brand-wrapper">
+            <img src="public/assets/logo.svg" alt="logo" class="logo">
+          </div>
+          <div class="login-wrapper my-auto">
+            <h1 class="login-title">Registrar</h1>
+            <form action="#!">
+              <div class="form-group">
+                <label for="name">Nome completo</label>
+                <input type="name" name="name" id="name" class="form-control" placeholder="Elon Musk">
+              </div>
+              <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" name="email" id="email" class="form-control" placeholder="elonmusk@spacex.com">
+              </div>
+              <div class="form-group">
+                <label for="password">Senha</label>
+                <input type="password" name="password" id="password" class="form-control" placeholder="Insira a sua senha">
+              </div>
+              <div class="form-group mb-4">
+                <label for="repeat-password">Senha</label>
+                <input type="repeat-password" name="repeat-password" id="repeat-password" class="form-control" placeholder="Repetir senha">
+              </div>
+              <input name="login" id="login" class="btn btn-block login-btn" type="button" value="Registrar">
+            </form>
+            <p class="login-wrapper-footer-text">Já registrado? <a href="/" class="text-reset">Clique aqui</a></p>
+          </div>
+        </div>
+        <%- include('../../partials/authAside/index.ejs') %>
+      </div>
+    </div>
+  </main>
+</body>
+</html>

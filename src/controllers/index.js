@@ -1,1 +1,7 @@
-export { default as AuthenticationController } from './AuthenticationController.js';
+const CompanyController = require('./CompanyController');
+const EmployeeController = require('./EmployeeController');
+
+module.exports = {
+  CompanyController,
+  EmployeeController,
+};
