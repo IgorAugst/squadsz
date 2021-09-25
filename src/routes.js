@@ -1,11 +1,14 @@
-import { Router } from 'express';
-import { AuthenticationController } from './controllers/index.js';
+const express = require('express');
+const {
+  CompanyController,
+  EmployeeController,
+} = require('./controllers');
 
-// Controllers
-const authenticationController = new AuthenticationController();
+const routes = express.Router();
 
-// Routes
-const routes = Router();
-routes.get('/', authenticationController.index);
+routes.get('/', CompanyController.renderLogin);
+routes.get('/empresa/entrar', CompanyController.renderLogin);
+routes.get('/empresa/registrar', CompanyController.renderRegister);
+routes.get('/funcionario/entrar', EmployeeController.renderLogin);
 
-export default routes;
+module.exports = routes;
