@@ -7,8 +7,8 @@ const sass = gulpSass(dartSass);
 gulp.task('sass', () => gulp
   .src([
     'node_modules/bootstrap/scss/*.scss',
-    'src/views/**/**/**.scss',
-    'src/views/custom.scss',
+    'src/styles/**/**.scss',
+    'src/styles/custom.scss',
   ])
   .pipe(sass())
   .pipe(gulp.dest('public/styles')));
@@ -19,8 +19,8 @@ gulp.task(
     gulp.watch(
       [
         'node_modules/bootstrap/scss/*.scss',
-        'src/views/**/**/**.scss',
-        'src/views/custom.scss',
+        'src/styles/**/**.scss',
+        'src/styles/custom.scss',
       ],
       gulp.parallel(['sass']),
     );

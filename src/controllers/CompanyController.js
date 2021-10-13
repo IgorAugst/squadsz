@@ -15,10 +15,6 @@ class CompanyController {
     return res.render('company/squads');
   }
 
-  static renderCustomers(req, res) {
-    return res.render('company/customers');
-  }
-
   static renderEmployees(req, res) {
     return res.render('company/employees');
   }
