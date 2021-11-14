@@ -1,0 +1,9 @@
+#profile-nav {
+  padding-right: 24px;
+  height: 64px;
+}
+#profile-nav i {
+  margin-left: 16px;
+  color: var(--bs-primary);
+  font-size: 24px;
+}

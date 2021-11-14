@@ -1,0 +1,48 @@
+#sidebar {
+  z-index: 1000;
+  position: fixed;
+  display: flex;
+  flex-direction: column;
+  left: 0;
+  width: 250px;
+  height: 100%;
+  overflow-y: auto;
+  header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 64px;
+    font-size: 20px;
+    line-height: 48px;
+    text-align: center;
+    p {
+      color: #fff;
+      text-decoration: none;
+      margin: 0;
+      &:hover {
+        color: #fff;
+      }
+    }
+  }
+  .nav{
+    display: flex;
+    flex-direction: column;
+    li {
+      padding: 16px 24px;
+      border-bottom: 1px solid #ECEFF1;
+      a {
+        text-decoration: none;
+        background: none;
+        color: #CFD8DC;
+        font-size: 16px;
+        i {
+          margin-right: 16px;
+        }
+        &:hover{
+          background: none;
+          color: #ECEFF1;
+        }
+      }
+    }
+  }
+}
