@@ -1,16 +1,16 @@
-<h1 align="center">Reactive Survey - Server</h1>
+<h1 align="center">SquadsZ</h1>
 
 <p align="center">
-     <img src=https://img.shields.io/github/languages/code-size/IgorSantoss/reactive-survey-server?style=for-the-badge hspace="2" vspace="20"/>
-    <img src=https://img.shields.io/github/license/IgorSantoss/reactive-survey-server?style=for-the-badge hspace="2" vspace="20"/>
-    <img src=https://img.shields.io/github/issues/IgorSantoss/reactive-survey-server?style=for-the-badge hspace="2" vspace="20"/>
+     <img src=https://img.shields.io/github/languages/code-size/IgorSantoss/squadsz?style=for-the-badge hspace="2" vspace="20"/>
+    <img src=https://img.shields.io/github/license/IgorSantoss/squadsz?style=for-the-badge hspace="2" vspace="20"/>
+    <img src=https://img.shields.io/github/issues/IgorSantoss/squadsz?style=for-the-badge hspace="2" vspace="20"/>
 </p>
 
 <!-- ABOUT -->
 
 ## About
 
-This is one of the repositories of the [Reactive Survey](https://github.com/IgorSantoss/reactive-survey-client) project. As its name suggests, it is the application's back-end, or rather, the server.
+🚧 In Progress 🚧
 
 <!-- DEMO -->
 
@@ -53,10 +53,10 @@ With these tools in hand, follow the steps below
 
 ```sh
 # Clone this repository
-$ git clone https://github.com/IgorSantoss/reactive-survey-server
+$ git clone https://github.com/IgorSantoss/squadsz
 
 # Go to the repository cloned
-$ cd reactive-survey-server
+$ cd squadsz
 
 # Install dependencies
 $ make install
@@ -75,11 +75,17 @@ $ make install
 # Build image
 $ make build
 
-# Start docker
+# Up and start docker container
 $ make up
 
-# Stop docker
+# Stop and remove docker container
 $ make down
+
+# Start docker container (already created)
+$ make start
+
+# Stop docker container (already created)
+$ make stop
 
 # Restart docker
 $ make restart
