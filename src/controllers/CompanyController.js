@@ -1,3 +1,5 @@
+const { employees } = require('../mocks/Employees');
+
 class CompanyController {
   static renderLogin(req, res) {
     return res.render('company/login');
@@ -16,7 +18,9 @@ class CompanyController {
   }
 
   static renderEmployees(req, res) {
-    return res.render('company/employees');
+    return res.render('company/employees', {
+      employees,
+    });
   }
 
   static renderProjects(req, res) {
