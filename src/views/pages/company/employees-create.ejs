@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://fonts.googleapis.com/css?family=Karla:400,700&display=swap" rel="stylesheet">
+  <script src="https://kit.fontawesome.com/498969099a.js" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="/public/styles/global.css">
+  <link rel="stylesheet" href="/public/styles/custom.css">
+  <link rel="stylesheet" href="/public/styles/pages/company/employees-create.css">
+  <link rel="stylesheet" href="/public/styles/partials/header.css">
+  <link rel="stylesheet" href="/public/styles/partials/sideBar.css">
+  <title>Empresa - Registrar funcionário</title>
+</head>
+<body>
+  <div id="viewport">
+    <%- include('../../partials/sideBar.ejs') %> 
+    <div id="content">
+      <%- include('../../partials/header.ejs') %>
+      <h1 class="m-5">Registrar funcionário</h1> 
+      <div class="m-5">
+        <form action="" method="post">
+          <div class="row mb-3">
+            <div class="col">
+              <label for="name">Nome</label>
+              <input type="text" class="form-control" id="name" placeholder="Nicholas Fraga Mascarenhas">
+            </div>
+            <div class="col">
+              <label for="social-name">Nome social (opcional)</label>
+              <input type="text" class="form-control" id="social-name" placeholder="">
+            </div>
+          </div>
+          <div class="row mb-3">
+            <div class="col">
+              <label for="birth-date">Data de nascimento</label>
+              <input type="text" class="form-control" id="birth-date" placeholder="11/02/1993">
+            </div>
+            <div class="col">
+              <label for="email">Email</label>
+              <input type="email" class="form-control" id="email" placeholder="nichofra@gmail.com">
+            </div>
+          </div>
+          <div class="row mb-3">
+            <div class="col">
+              <label for="gender">Sexo</label>
+              <select type="text" class="form-control" id="gender">
+                <option value="masculine">Masculino</option>
+                <option value="feminine">Feminino</option>
+                <option value="non-binary">Não binário</option>
+                <option value="other">Outro</option>
+              </select>
+            </div>
+            <div class="col">
+              <label for="squad">Squad</label>
+              <select type="text" class="form-control" id="squad">
+                <% squads.forEach(squad => { %>
+                  <option value="<%- squad.value %>"><%- squad.name %></option>
+                <% }) %> 
+              </select>
+            </div>
+          </div>
+          <div class="col w-50">
+            <label for="office">Cargo</label>
+            <input type="text" class="form-control" id="office" placeholder="Front-end">
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

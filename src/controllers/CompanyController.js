@@ -1,4 +1,5 @@
 const { employees } = require('../mocks/Employees');
+const { squads } = require('../mocks/Squads');
 
 class CompanyController {
   static renderLogin(req, res) {
@@ -20,6 +21,12 @@ class CompanyController {
   static renderEmployees(req, res) {
     return res.render('company/employees', {
       employees,
+    });
+  }
+
+  static renderEmployeesRegister(req, res) {
+    return res.render('company/employees-create', {
+      squads,
     });
   }
 

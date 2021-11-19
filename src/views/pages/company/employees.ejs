@@ -18,13 +18,13 @@
     <%- include('../../partials/sideBar.ejs') %> 
     <div id="content">
       <%- include('../../partials/header.ejs') %> 
-      <div class="wrapper">
+      <div class="wrapper m-5">
         <div class="table-top d-flex">
           <div>
             <h1>Funcionários</h1>
             <p>Aqui você pode gerenciar os <strong><%- employees.length %></strong> funcionários da sua empresa.</p>
           </div>
-          <a href="/company/employees/create" class="button-primary">+ Adicionar funcionário</a>
+          <a href="/empresa/funcionarios/registrar" class="button-primary">+ Adicionar funcionário</a>
         </div>
         <table class="table table-hover table-bordered">
           <thead>

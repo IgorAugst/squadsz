@@ -71,7 +71,7 @@
 
     .login-btn {
       padding: 13px 20px;
-      background-color: #fdbb28;
+      background-color: var(--bs-primary);
       border-radius: 0;
       font-size: 20px;
       font-weight: bold;
@@ -79,9 +79,9 @@
       color: #fff;
       margin-bottom: 14px;
       &:hover {
-        border: 1px solid #fdbb28;
+        border: 1px solid var(--bs-primary);
         background-color: #fff;
-        color: #fdbb28;
+        color: var(--bs-primary);
       }
     }
 
