@@ -30,6 +30,15 @@ class CompanyController {
     });
   }
 
+  static renderEmployeesEdit(req, res) {
+    const { id: employeeId } = req.params;
+    const employee = employees.find(({ id }) => id === Number(employeeId));
+    return res.render('company/employee-edit', {
+      employee,
+      squads,
+    });
+  }
+
   static renderProjects(req, res) {
     return res.render('company/projects');
   }

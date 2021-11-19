@@ -38,15 +38,15 @@
             </tr>
           </thead>
           <tbody>
-            <% employees.forEach(employee => { %>
-              <tr>
-                <th scope="row"><%- employee.id %></th>
-                <td><%- employee.name %></td>
-                <td><%- employee.office %></td>
-                <td><%- employee.gender %></td>
-                <td><%- employee.squad %></td>
-                <td><%- employee.email %></td>
-              </tr>
+            <% employees.forEach(({ id, name, office, squad, email, gender }) => { %>
+                <tr onclick="window.location='/empresa/funcionarios/<%- id %>'">
+                  <th scope="row"><%- id %></th>
+                  <td><%- name %></td>
+                  <td><%- office %></td>
+                  <td><%- gender %></td>
+                  <td><%- squad %></td>
+                  <td><%- email %></td>
+                </tr>
             <% }) %> 
           </tbody>
         </table>
