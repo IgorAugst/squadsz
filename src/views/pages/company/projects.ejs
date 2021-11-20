@@ -18,6 +18,39 @@
     <%- include('../../partials/sideBar.ejs') %> 
     <div id="content">
       <%- include('../../partials/header.ejs') %> 
+      <div class="wrapper m-5">
+        <div class="table-top d-flex">
+          <div>
+            <h1>Projetos</h1>
+            <p>Aqui você pode gerenciar os <strong><%- projects.length %></strong> projetos da sua empresa.</p>
+          </div>
+          <a href="/empresa/projetos/registrar" class="button-primary">+ Adicionar projeto</a>
+        </div>
+        <table class="table table-hover table-bordered">
+          <thead>
+            <tr>
+              <th scope="col">ID</th>
+              <th scope="col">Nome</th>
+              <th scope="col">Squad</th>
+              <th scope="col">Status</th>
+              <th scope="col">Criado em</th>
+              <th scope="col">Terminado em</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% projects.forEach(({ id, name, squad, status, created_at, finished_at }) => { %>
+                <tr onclick="window.location='/empresa/projetos/<%- id %>'">
+                  <th scope="row"><%- id %></th>
+                  <td><%- name %></td>
+                  <td><%- squad %></td>
+                  <td><%- status %></td>
+                  <td><%- created_at %></td>
+                  <td><%- finished_at %></td>
+                </tr>
+            <% }) %> 
+          </tbody>
+        </table>
+      </div>
     </div>
   </div>
 </body>

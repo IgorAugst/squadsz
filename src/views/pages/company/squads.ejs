@@ -17,7 +17,36 @@
   <div id="viewport">
     <%- include('../../partials/sideBar.ejs') %> 
     <div id="content">
-      <%- include('../../partials/header.ejs') %> 
+      <%- include('../../partials/header.ejs') %>
+      <div class="m-5">
+        <div class="table-top d-flex">
+          <div>
+            <h1>Squads</h1>
+            <p>Aqui você pode gerenciar as <strong><%- squads.length %></strong> squads da sua empresa.</p>
+          </div>
+          <a href="/empresa/squads/registrar" class="button-primary">+ Adicionar squad</a>
+        </div>
+        <table class="table table-hover table-bordered">
+          <thead>
+            <tr>
+              <th scope="col">ID</th>
+              <th scope="col">Nome</th>
+              <th scope="col">Membros</th>
+              <th scope="col">Projetos designados</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% squads.forEach(({ id, name, lenEmployees, lenProjects }) => { %>
+                <tr onclick="window.location='/empresa/squads/<%- id %>'">
+                  <th scope="row"><%- id %></th>
+                  <td><%- name %></td>
+                  <td><%- lenEmployees %></td>
+                  <td><%- lenProjects %></td>
+                </tr>
+            <% }) %> 
+          </tbody>
+        </table>
+      </div>
     </div>
   </div>
 </body>

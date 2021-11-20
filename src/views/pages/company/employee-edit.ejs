@@ -28,13 +28,13 @@
             </div>
             <div class="col">
               <label for="social-name">Nome social (opcional)</label>
-              <input type="text" class="form-control" id="social-name" value="<%- employee.socialName %>">
+              <input type="text" class="form-control" id="social-name" value="<%- employee.social_name %>">
             </div>
           </div>
           <div class="row mb-3">
             <div class="col">
               <label for="birth-date">Data de nascimento</label>
-              <input type="text" class="form-control" id="birth-date" value="<%- employee.birthDate %>">
+              <input type="text" class="form-control" id="birth-date" value="<%- employee.birth_date %>">
             </div>
             <div class="col">
               <label for="email">Email</label>
@@ -64,7 +64,7 @@
               <select type="text" class="form-control" id="squad">
                 <% squads.forEach(squad => { %>
                   <option value="<%- squad.value %>"
-                    <% if (squad.name === employee.squad) { %>
+                    <% if (squad.id === employee.id_squad) { %>
                       selected
                     <% } %>
                     ><%- squad.name %></option>

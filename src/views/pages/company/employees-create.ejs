@@ -11,7 +11,7 @@
   <link rel="stylesheet" href="/public/styles/pages/company/employees-create.css">
   <link rel="stylesheet" href="/public/styles/partials/header.css">
   <link rel="stylesheet" href="/public/styles/partials/sideBar.css">
-  <title>Empresa - Registrar funcionário</title>
+  <title>Empresa - registrar funcionário</title>
 </head>
 <body>
   <div id="viewport">
@@ -54,8 +54,8 @@
             <div class="col">
               <label for="squad">Squad</label>
               <select type="text" class="form-control" id="squad">
-                <% squads.forEach(squad => { %>
-                  <option value="<%- squad.value %>"><%- squad.name %></option>
+                <% squads.forEach(({ id, name }) => { %>
+                  <option value="<%- id %>"><%- name %></option>
                 <% }) %> 
               </select>
             </div>
