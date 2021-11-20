@@ -31,15 +31,17 @@
             <tr>
               <th scope="col">ID</th>
               <th scope="col">Nome</th>
+              <th scope="col">Líder</th>
               <th scope="col">Membros</th>
               <th scope="col">Projetos designados</th>
             </tr>
           </thead>
           <tbody>
-            <% squads.forEach(({ id, name, lenEmployees, lenProjects }) => { %>
+            <% squads.forEach(({ id, name, manager, lenEmployees, lenProjects }) => { %>
                 <tr onclick="window.location='/empresa/squads/<%- id %>'">
                   <th scope="row"><%- id %></th>
                   <td><%- name %></td>
+                  <td><%- manager %></td>
                   <td><%- lenEmployees %></td>
                   <td><%- lenProjects %></td>
                 </tr>

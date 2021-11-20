@@ -23,8 +23,10 @@ class CompanyController {
       const lenProjects = projects.filter(
         ({ id_squad: idSquad }) => idSquad === Number(squad.id),
       ).length;
+      const { name: manager } = employees.find(({ id }) => id === Number(squad.id_manager));
       return {
         ...squad,
+        manager,
         lenEmployees,
         lenProjects,
       };
@@ -37,6 +39,15 @@ class CompanyController {
 
   static renderSquadsRegister(req, res) {
     return res.render('company/squads-create', {
+      employees,
+    });
+  }
+
+  static renderSquadsEdit(req, res) {
+    const { id: squadId } = req.params;
+    const squad = squads.find(({ id }) => id === Number(squadId));
+    return res.render('company/squads-edit', {
+      squad,
       employees,
     });
   }
@@ -84,6 +95,15 @@ class CompanyController {
 
   static renderProjectsRegister(req, res) {
     return res.render('company/projects-create', {
+      squads,
+    });
+  }
+
+  static renderProjectsEdit(req, res) {
+    const { id: projectId } = req.params;
+    const project = projects.find(({ id }) => id === Number(projectId));
+    return res.render('company/projects-edit', {
+      project,
       squads,
     });
   }

@@ -6,7 +6,7 @@ const projects = [
     description: 'Esse é o projeto 1',
     created_at: '2020-01-01',
     finished_at: '2020-01-01',
-    status: 'Feito',
+    status: 'feito',
   },
   {
     id: 2,
@@ -15,7 +15,7 @@ const projects = [
     description: 'Esse é o projeto 2',
     created_at: '2020-01-01',
     finished_at: '2020-01-01',
-    status: 'Em progresso',
+    status: 'em progresso',
   },
   {
     id: 3,
@@ -24,7 +24,7 @@ const projects = [
     description: 'Esse é o projeto 3',
     created_at: '2020-01-01',
     finished_at: '2020-01-01',
-    status: 'Em progresso',
+    status: 'em progresso',
   },
   {
     id: 4,
@@ -33,7 +33,7 @@ const projects = [
     description: 'Esse é o projeto 4',
     created_at: '2020-01-01',
     finished_at: '2020-01-01',
-    status: 'Para fazer',
+    status: 'para fazer',
   },
 ];
 
