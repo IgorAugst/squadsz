@@ -2,97 +2,100 @@ DROP SCHEMA public CASCADE;
 
 CREATE SCHEMA public;
 
-CREATE TABLE empresa
+CREATE TABLE company
 (
-    id_empresa serial PRIMARY KEY,
+    id serial PRIMARY KEY,
+    created_at TIMESTAMP NOT NULL DEFAULT NOW(),
     cnpj       int         NOT NULL,
-    nome       varchar(50) NOT NULL,
+    name       varchar(50) NOT NULL,
     email      varchar(50) NOT NULL,
-    senha      char(256)   NOT NULL
+    password      char(256)   NOT NULL
 );
 
 CREATE TYPE sexo AS enum ('masculino', 'feminino', 'nb', 'outro');
 
-CREATE TABLE funcionario
+CREATE TABLE employee
 (
-    id_funcionario int GENERATED ALWAYS AS IDENTITY,
-    nome           VARCHAR(50) NOT NULL,
-    id_empresa     int         NOT NULL UNIQUE,
-    nome_social    varchar(50),
+    id int GENERATED ALWAYS AS IDENTITY,
+    created_at TIMESTAMP NOT NULL DEFAULT NOW(),
+    name           VARCHAR(50) NOT NULL,
+    id_company     int         NOT NULL UNIQUE,
+    social_name    varchar(50),
     email          varchar(50) NOT NULL,
-    cargo          varchar(50),
-    nascimento     date        NOT NULL,
-    sexo           sexo        NOT NULL,
-    senha          char(256)   NOT NULL,
-    PRIMARY KEY (id_funcionario),
-    FOREIGN KEY (id_empresa) REFERENCES empresa (id_empresa)
+    office          varchar(50),
+    birth_date     date        NOT NULL,
+    gender           sexo        NOT NULL,
+    password          char(256)   NOT NULL,
+    PRIMARY KEY (id),
+    FOREIGN KEY (id_company) REFERENCES company (id)
 );
 
 CREATE TABLE squad
 (
-    id_squad                 int GENERATED ALWAYS AS IDENTITY,
-    id_funcionario_gerente   int,
-    nome                     varchar(50),
-    PRIMARY KEY (id_squad),
-    FOREIGN KEY (id_funcionario_gerente) REFERENCES funcionario (id_funcionario)
+    id                 int GENERATED ALWAYS AS IDENTITY,
+    created_at TIMESTAMP NOT NULL DEFAULT NOW(),
+    id_manager_employee   int,
+    name                     varchar(50),
+    PRIMARY KEY (id),
+    FOREIGN KEY (id_manager_employee) REFERENCES employee (id)
 );
 
-ALTER TABLE empresa
+ALTER TABLE company
     ADD id_squad int,
-    ADD FOREIGN KEY (id_squad) REFERENCES squad(id_squad);
+    ADD FOREIGN KEY (id_squad) REFERENCES squad(id);
 
-ALTER  TABLE funcionario
+ALTER  TABLE employee
 add id_squad int,
-ADD FOREIGN KEY (id_squad) REFERENCES squad(id_squad);
+ADD FOREIGN KEY (id_squad) REFERENCES squad(id);
 
 CREATE TYPE status AS ENUM('feito', 'para fazer', 'em progresso');
 
-CREATE TABLE projeto(
-    id_projeto int GENERATED ALWAYS AS IDENTITY ,
+CREATE TABLE project(
+    id int GENERATED ALWAYS AS IDENTITY ,
+    created_at TIMESTAMP NOT NULL DEFAULT NOW(),
     id_squad int,
-    nome varchar(50) NOT NULL ,
+    name varchar(50) NOT NULL ,
     status status,
-    descricao TEXT,
-    data_final date,
-    data_inicio date NOT NULL,
-    PRIMARY KEY (id_projeto),
-    FOREIGN KEY (id_squad) REFERENCES squad(id_squad)
+    description TEXT,
+    finished_at date,
+    PRIMARY KEY (id),
+    FOREIGN KEY (id_squad) REFERENCES squad(id)
 );
 
 CREATE TABLE sprint(
-    id_sprint int GENERATED ALWAYS AS IDENTITY ,
+    id int GENERATED ALWAYS AS IDENTITY ,
+    created_at TIMESTAMP NOT NULL DEFAULT NOW(),
     id_squad int,
-    objetivo varchar(1000),
-    data_inicial date NOT NULL ,
-    data_final date,
-    PRIMARY KEY (id_sprint),
-    FOREIGN KEY (id_squad) REFERENCES squad(id_squad)
+    goal varchar(1000),
+    finished_at date,
+    PRIMARY KEY (id),
+    FOREIGN KEY (id_squad) REFERENCES squad(id)
 );
 
-CREATE TABLE atividade(
-    id_atividade int GENERATED ALWAYS AS IDENTITY,
+CREATE TABLE task(
+    id int GENERATED ALWAYS AS IDENTITY,
+    created_at TIMESTAMP NOT NULL DEFAULT NOW(),
     id_sprint int,
-    id_projeto int,
-    id_funcionario int,
-    nome varchar(50) NOT NULL ,
-    descricao TEXT,
-    data_criacao date NOT NULL ,
-    pontos int,
-    prioridade int DEFAULT 0,
+    id_project int,
+    id_employee int,
+    name varchar(50) NOT NULL ,
+    description TEXT,
+    points int,
     status status,
-    PRIMARY KEY (id_atividade),
-    FOREIGN KEY (id_sprint) REFERENCES sprint(id_sprint),
-    FOREIGN KEY (id_projeto) REFERENCES projeto(id_projeto),
-    FOREIGN KEY (id_funcionario) REFERENCES funcionario(id_funcionario)
+    PRIMARY KEY (id),
+    FOREIGN KEY (id_sprint) REFERENCES sprint(id),
+    FOREIGN KEY (id_project) REFERENCES project(id),
+    FOREIGN KEY (id_employee) REFERENCES employee(id)
 );
 
-CREATE TABLE observacao(
-    id_observacao int GENERATED ALWAYS AS IDENTITY ,
-    id_atividade int,
-    id_funcionario int,
-    anexo varchar(256),
-    comentario TEXT,
-    PRIMARY KEY (id_observacao),
-    FOREIGN KEY (id_atividade) REFERENCES atividade(id_atividade),
-    FOREIGN KEY (id_funcionario) REFERENCES funcionario(id_funcionario)
+CREATE TABLE note(
+    id int GENERATED ALWAYS AS IDENTITY,
+    created_at TIMESTAMP NOT NULL DEFAULT NOW(),
+    id_task int,
+    id_employee int,
+    attachment varchar(256),
+    comment TEXT,
+    PRIMARY KEY (id),
+    FOREIGN KEY (id_task) REFERENCES task(id),
+    FOREIGN KEY (id_employee) REFERENCES employee(id)
 );
