@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://fonts.googleapis.com/css?family=Karla:400,700&display=swap" rel="stylesheet">
+  <script src="https://kit.fontawesome.com/498969099a.js" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="/public/styles/css/global.css">
+  <link rel="stylesheet" href="/public/styles/css/custom.css">
+  <link rel="stylesheet" href="/public/styles/css/pages/company/employees.css">
+  <link rel="stylesheet" href="/public/styles/css/partials/header.css">
+  <link rel="stylesheet" href="/public/styles/css/partials/side-bar.css">
+  <title>Empresa - Funcionários</title>
+</head>
+<body>
+  <div id="viewport">
+    <%- include('../../partials/side-bar.ejs') %> 
+    <div id="content">
+      <%- include('../../partials/header.ejs') %> 
+      <div class="wrapper m-5">
+        <div class="table-top d-flex">
+          <div>
+            <h1>Funcionários</h1>
+            <p>Aqui você pode gerenciar os <strong><%- employees.length %></strong> funcionários da sua empresa.</p>
+          </div>
+          <a href="/empresa/funcionarios/registrar" class="button-primary">+ Adicionar funcionário</a>
+        </div>
+        <table class="table table-hover table-bordered">
+          <thead>
+            <tr>
+              <th scope="col">ID</th>
+              <th scope="col">Nome</th>
+              <th scope="col">Cargo</th>
+              <th scope="col">Sexo</th>
+              <th scope="col">Squad</th>
+              <th scope="col">Email</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% employees.forEach(({ id, name, office, squad, email, gender }) => { %>
+                <tr onclick="window.location='/empresa/funcionarios/<%- id %>'">
+                  <th scope="row"><%- id %></th>
+                  <td><%- name %></td>
+                  <td><%- office %></td>
+                  <td><%- gender %></td>
+                  <td><%- squad %></td>
+                  <td><%- email %></td>
+                </tr>
+            <% }) %> 
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

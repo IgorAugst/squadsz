@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Entrar como empresa</title>
+  <link href="https://fonts.googleapis.com/css?family=Karla:400,700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/public/styles/css/global.css">
+  <link rel="stylesheet" href="/public/styles/css/custom.css">
+  <link rel="stylesheet" href="/public/styles/css/pages/company/login.css">
+</head>
+<body>
+  <main>
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-sm-6 login-section-wrapper">
+          <div class="brand-wrapper">
+            <img src="/public/assets/logo.svg" alt="logo" class="logo">
+          </div>
+          <div class="login-wrapper my-auto">
+            <h1 class="login-title">Entrar como empresa</h1>
+            <form action="#!" method="POST">
+              <div class="form-group">
+                <label for="cnpj">CNPJ</label>
+                <input type="cnpj" name="cnpj" id="cnpj" class="form-control" placeholder="Insira o CNPJ">
+              </div>
+              <div class="form-group mb-4">
+                <label for="password">Senha</label>
+                <input type="password" name="password" id="password" class="form-control" placeholder="**********">
+              </div>
+              <input name="login" id="login" class="btn btn-block login-btn" type="button" value="Entrar">
+            </form>
+            <p class="login-wrapper-footer-text">Sua empresa não está registrada? <a href="/empresa/registrar" class="text-reset">Clique aqui</a></p>
+            <div class="login-separator">ou</div>
+            <p class="login-wrapper-footer-text">Você é um funcionário? <a href="/funcionario/entrar" class="text-reset">Clique aqui</a></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+</body>
+</html>

@@ -1,0 +1,29 @@
+<aside id="sidebar" class="bg-primary">
+  <header class="bg-secondary container-fluid">
+    <p><%- profile.name %> </p>
+  </header>
+  <ul class="nav">
+    <% if (company) { %> 
+      <li>
+        <a href="/empresa">
+          <i class="fas fa-home"></i> Dashboard
+        </a>
+      </li>
+      <li>
+        <a href="/empresa/squads">
+          <i class="fas fa-users"></i> Squads
+        </a>
+      </li>
+      <li>
+        <a href="/empresa/funcionarios">
+          <i class="fas fa-building"></i> Funcionários
+        </a>
+      </li>
+      <li>
+        <a href="/empresa/projetos">
+          <i class="fas fa-project-diagram"></i> Projetos
+        </a>
+      </li>
+    <% } %> 
+  </ul>
+</aside>

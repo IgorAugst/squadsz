@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://fonts.googleapis.com/css?family=Karla:400,700&display=swap" rel="stylesheet">
+  <script src="https://kit.fontawesome.com/498969099a.js" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="/public/styles/css/global.css">
+  <link rel="stylesheet" href="/public/styles/css/custom.css">
+  <link rel="stylesheet" href="/public/styles/css/pages/company/projects-edit.css">
+  <link rel="stylesheet" href="/public/styles/css/partials/header.css">
+  <link rel="stylesheet" href="/public/styles/css/partials/side-bar.css">
+  <title>Empresa - editar projeto</title>
+</head>
+<body>
+  <div id="viewport">
+    <%- include('../../partials/side-bar.ejs') %> 
+    <div id="content">
+      <%- include('../../partials/header.ejs') %>
+      <h1 class="m-5">Editar projeto - <%- project.name %> </h1> 
+      <div class="m-5">
+        <form action="" method="post">
+          <div class="row mb-3">
+            <div class="col">
+              <label for="name">Nome</label>
+              <input type="text" class="form-control" id="name" value="<%- project.name %>">
+            </div>
+            <div class="col">
+              <label for="squad">Squad responsável</label>
+              <select type="text" class="form-control" id="squad">
+                <% squads.forEach(squad => { %>
+                  <option value="<%- squad.value %>"
+                    <% if (squad.id === project.id_squad) { %>
+                      selected
+                    <% } %>
+                    ><%- squad.name %></option>
+                <% }) %> 
+              </select>
+            </div>
+          </div>
+          <div class="row mb-3">
+            <div class="col">
+              <label for="description">Descrição</label>
+              <textarea class="form-control" id="description" rows="3"><%- project.description %></textarea>
+            </div>
+          </div>
+          <div class="row mb-3">
+            <div class="col">
+              <label for="status">Status</label>
+              <select type="text" class="form-control" id="gender">
+                <option value="to-do" <% if ("para fazer" === project.status) { %>
+                  selected
+                <% } %>>Para fazer</option>
+                <option value="in_progress" <% if ("em progresso" === project.status) { %>
+                  selected
+                <% } %>>Em progresso</option>
+                <option value="done" <% if ("feito" === project.status) { %>
+                  selected
+                <% } %>>Feito</option>
+              </select>
+            </div>
+          </div>
+          <div class="d-block">
+            <button type="submit" class="btn btn-primary w-25 text-white py-2">Editar</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

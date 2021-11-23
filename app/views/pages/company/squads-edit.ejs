@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://fonts.googleapis.com/css?family=Karla:400,700&display=swap" rel="stylesheet">
+  <script src="https://kit.fontawesome.com/498969099a.js" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="/public/styles/css/global.css">
+  <link rel="stylesheet" href="/public/styles/css/custom.css">
+  <link rel="stylesheet" href="/public/styles/css/pages/company/employee-edit.css">
+  <link rel="stylesheet" href="/public/styles/css/partials/header.css">
+  <link rel="stylesheet" href="/public/styles/css/partials/side-bar.css">
+  <title>Empresa - editar squad</title>
+</head>
+<body>
+  <div id="viewport">
+    <%- include('../../partials/side-bar.ejs') %> 
+    <div id="content">
+      <%- include('../../partials/header.ejs') %>
+      <h1 class="m-5">Editar squad - <%- squad.name %> </h1> 
+      <div class="m-5">
+        <form action="" method="post">
+          <div class="row mb-3">
+            <div class="col">
+              <label for="name">Nome</label>
+              <input type="text" class="form-control" id="name" value="<%- squad.name %>">
+            </div>
+            <div class="col">
+              <label for="manager">Líder do projeto</label>
+              <select type="text" class="form-control" id="manager">
+                <% employees.forEach(employee => { %>
+                  <option value="<%- employee.value %>"
+                    <% if (employee.id === squad.id_manager) { %>
+                      selected
+                    <% } %>
+                    ><%- employee.name %></option>
+                <% }) %> 
+              </select>
+            </div>
+          </div>
+          <div class="d-block">
+            <button type="submit" class="btn btn-primary w-25 text-white py-2">Editar</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
