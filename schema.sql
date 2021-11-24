@@ -6,9 +6,9 @@ CREATE TABLE company
 (
     id serial PRIMARY KEY,
     created_at TIMESTAMP NOT NULL DEFAULT NOW(),
-    cnpj       int         NOT NULL,
+    cnpj       int         NOT NULL UNIQUE,
     name       varchar(50) NOT NULL,
-    email      varchar(50) NOT NULL,
+    email      varchar(50) NOT NULL UNIQUE,
     password      char(256)   NOT NULL
 );
 

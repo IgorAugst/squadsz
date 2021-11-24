@@ -15,7 +15,7 @@ services:
 
   api:
     image: node
-    command: sh -c "npm start"
+    command: sh -c "npm run dev"
     ports:
       - '${NODE_PORT}:${NODE_PORT}'
     working_dir: /app
