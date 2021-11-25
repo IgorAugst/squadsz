@@ -1,9 +1,9 @@
 const CompanyController = require('./CompanyController');
 const EmployeeController = require('./EmployeeController');
-const RegisterController = require('./RegisterController');
+const AuthController = require('./AuthController');
 
 module.exports = {
   CompanyController,
   EmployeeController,
-  RegisterController
+  AuthController,
 };

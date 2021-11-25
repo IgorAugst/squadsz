@@ -20,7 +20,7 @@
           </div>
           <div class="login-wrapper my-auto">
             <h1 class="login-title">Registrar empresa</h1>
-            <form action="#!">
+            <form method="post" action="/empresa/registrar">
               <div class="form-group">
                 <label for="name">Nome da empresa</label>
                 <input type="name" name="name" id="name" class="form-control" placeholder="Minha Empresa">
@@ -38,13 +38,22 @@
                 <input type="password" name="password" id="password" class="form-control" placeholder="**********">
               </div>
               <div class="form-group mb-4">
-                <label for="repeat-password">Repetir senha</label>
-                <input type="repeat-password" name="repeat-password" id="repeat-password" class="form-control" placeholder="**********">
+                <label for="repeat_password">Repetir senha</label>
+                <input type="password" name="repeat_password" id="repeat_password" class="form-control" placeholder="**********">
               </div>
               <input name="login" id="login" class="btn btn-block login-btn" type="submit" value="Registrar">
             </form>
             <p class="login-wrapper-footer-text">Empresa já registrada? <a href="/" class="text-reset">Clique aqui</a></p>
           </div>
+          <% if (typeof errors != 'undefined') { %>
+            <div class="alert alert-danger" role="alert">
+              <ul>
+                <% errors.forEach((error) => { %>
+                  <li><%= error.message %></li>
+                <% }) %>
+              </ul>
+            </div>
+          <% } %> 
         </div>
       </div>
     </div>

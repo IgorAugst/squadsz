@@ -1,17 +1,25 @@
 const dotenv = require('dotenv');
 const express = require('express');
+const flash = require('express-flash');
+const session = require('express-session');
 const { NODE_PORT } = require('../config/base');
 const routes = require('./routes');
 
 dotenv.config();
 
-const server = express();
+const app = express();
 
-server.use(express.urlencoded({ extended: false }));
-server.use(express.json());
-server.use('/public', express.static('public'));
-server.use(routes);
-server.set('views', 'app/views/pages');
-server.set('view engine', 'ejs');
+app.use(express.urlencoded({ extended: false }));
+app.use(express.json());
+app.use(session({
+  secret: 'secret',
+  resave: false,
+  saveUninitialized: false,
+}));
+app.use(flash());
+app.use('/public', express.static('public'));
+app.use(routes);
+app.set('views', 'app/views/pages');
+app.set('view engine', 'ejs');
 
-server.listen(NODE_PORT, () => console.log(`Listening on port: ${NODE_PORT}`));
+app.listen(NODE_PORT, () => console.log(`Listening on port: ${NODE_PORT}`));
