@@ -10,20 +10,33 @@ const companyProps = {
 
 class CompanyController {
   static login(req, res) {
+    if (req.isAuthenticated()) {
+      return res.redirect('/empresa');
+    }
     return res.render('company/login');
   }
 
   static register(req, res) {
+    if (req.isAuthenticated()) {
+      return res.redirect('/empresa');
+    }
     return res.render('company/register');
   }
 
   static dashboard(req, res) {
+    if (!req.isAuthenticated()) {
+      return res.redirect('/empresa/entrar');
+    }
     return res.render('company/dashboard', {
       ...companyProps,
     });
   }
 
   static squads(req, res) {
+    if (!req.isAuthenticated()) {
+      return res.redirect('/empresa/entrar');
+    }
+
     const renderSquads = squads.map((squad) => {
       const lenEmployees = employees.filter(
         ({ id_squad: idSquad }) => idSquad === Number(squad.id),
@@ -47,6 +60,10 @@ class CompanyController {
   }
 
   static renderSquadsRegister(req, res) {
+    if (!req.isAuthenticated()) {
+      return res.redirect('/empresa/entrar');
+    }
+
     return res.render('company/squads-create', {
       employees,
       ...companyProps,
@@ -54,6 +71,10 @@ class CompanyController {
   }
 
   static renderSquadsEdit(req, res) {
+    if (!req.isAuthenticated()) {
+      return res.redirect('/empresa/entrar');
+    }
+
     const { id: squadId } = req.params;
     const squad = squads.find(({ id }) => id === Number(squadId));
     return res.render('company/squads-edit', {
@@ -64,6 +85,10 @@ class CompanyController {
   }
 
   static renderEmployees(req, res) {
+    if (!req.isAuthenticated()) {
+      return res.redirect('/empresa/entrar');
+    }
+
     const renderEmployees = employees.map((employee) => {
       const { name: squad } = squads.find(({ id }) => id === Number(employee.id_squad));
       return {
@@ -78,6 +103,10 @@ class CompanyController {
   }
 
   static renderEmployeesRegister(req, res) {
+    if (!req.isAuthenticated()) {
+      return res.redirect('/empresa/entrar');
+    }
+
     return res.render('company/employees-create', {
       squads,
       ...companyProps,
@@ -85,6 +114,10 @@ class CompanyController {
   }
 
   static renderEmployeesEdit(req, res) {
+    if (!req.isAuthenticated()) {
+      return res.redirect('/empresa/entrar');
+    }
+
     const { id: employeeId } = req.params;
     const employee = employees.find(({ id }) => id === Number(employeeId));
     return res.render('company/employee-edit', {
@@ -95,6 +128,10 @@ class CompanyController {
   }
 
   static renderProjects(req, res) {
+    if (!req.isAuthenticated()) {
+      return res.redirect('/empresa/entrar');
+    }
+
     const renderProjects = projects.map((project) => {
       const { name: squad } = squads.find(({ id }) => id === Number(project.id_squad));
       return {
@@ -109,6 +146,10 @@ class CompanyController {
   }
 
   static renderProjectsRegister(req, res) {
+    if (!req.isAuthenticated()) {
+      return res.redirect('/empresa/entrar');
+    }
+
     return res.render('company/projects-create', {
       squads,
       ...companyProps,
@@ -116,6 +157,10 @@ class CompanyController {
   }
 
   static renderProjectsEdit(req, res) {
+    if (!req.isAuthenticated()) {
+      return res.redirect('/empresa/entrar');
+    }
+
     const { id: projectId } = req.params;
     const project = projects.find(({ id }) => id === Number(projectId));
     return res.render('company/projects-edit', {

@@ -2,8 +2,13 @@ const dotenv = require('dotenv');
 const express = require('express');
 const flash = require('express-flash');
 const session = require('express-session');
+const passport = require('passport');
 const { NODE_PORT } = require('../config/base');
 const routes = require('./routes');
+
+const initializePassport = require('./auth');
+
+initializePassport(passport);
 
 dotenv.config();
 
@@ -16,6 +21,8 @@ app.use(session({
   resave: false,
   saveUninitialized: false,
 }));
+app.use(passport.initialize());
+app.use(passport.session());
 app.use(flash());
 app.use('/public', express.static('public'));
 app.use(routes);

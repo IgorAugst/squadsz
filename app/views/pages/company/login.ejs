@@ -20,24 +20,29 @@
           </div>
           <div class="login-wrapper my-auto">
             <h1 class="login-title">Entrar como empresa</h1>
-            <form action="#!" method="POST">
+            <form method="post" action="/empresa/entrar">
               <div class="form-group">
-                <label for="cnpj">CNPJ</label>
-                <input type="cnpj" name="cnpj" id="cnpj" class="form-control" placeholder="Insira o CNPJ">
+                <label for="email">Email</label>
+                <input type="email" name="email" id="email" class="form-control" placeholder="Insira o email">
               </div>
               <div class="form-group mb-4">
                 <label for="password">Senha</label>
                 <input type="password" name="password" id="password" class="form-control" placeholder="**********">
               </div>
-              <input name="login" id="login" class="btn btn-block login-btn" type="button" value="Entrar">
+              <input name="login" id="login" class="btn btn-block login-btn" type="submit" value="Entrar">
             </form>
-            <p class="login-wrapper-footer-text">Sua empresa não está registrada? <a href="/empresa/registrar" class="text-reset">Clique aqui</a></p>
-            <div class="login-separator">ou</div>
             <p class="login-wrapper-footer-text">Você é um funcionário? <a href="/funcionario/entrar" class="text-reset">Clique aqui</a></p>
+            <div class="login-separator">ou</div>
+            <p class="login-wrapper-footer-text">Sua empresa não está registrada? <a href="/empresa/registrar" class="text-reset">Clique aqui</a></p>
           </div>
           <% if (messages.success_msg) { %> 
             <div class="alert alert-success">
               <%= messages.success_msg %>
+            </div>
+          <% } %>
+          <% if (messages.error) { %> 
+            <div class="alert alert-danger">
+              <%= messages.error %>
             </div>
           <% } %>
         </div>

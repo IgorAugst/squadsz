@@ -20,19 +20,20 @@ class Company {
     }
 
     pool.query('SELECT * FROM company WHERE email = $1', [email], (err, result) => {
-      if (result.rows.length > 0) {
+      if (result && result.rows.length > 0) {
         errors.push({ message: 'E-mail já cadastrado' });
       }
     });
 
     pool.query('SELECT * FROM company WHERE cnpj = $1', [cnpj], (err, result) => {
-      if (result.rows.length > 0) {
+      if (result && result.rows.length > 0) {
         errors.push({ message: 'CNPJ já cadastrado' });
       }
     });
 
     if (errors.length === 0) {
-      const hash = await bcrypt.hash(password, 10);
+      const salt = bcrypt.genSaltSync(10);
+      const hash = bcrypt.hashSync(password, salt);
 
       pool.query('INSERT INTO company (cnpj, name, email, password) VALUES ($1, $2, $3, $4) RETURNING id, password',
         [cnpj, name, email, hash], (err) => {

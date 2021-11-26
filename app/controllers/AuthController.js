@@ -1,6 +1,15 @@
+const passport = require('passport');
 const Company = require('../models/Company');
 
 class AuthController {
+  static async loginCompany() {
+    await passport.authenticate('local', {
+      successRedirect: '/empresa',
+      failureRedirect: '/',
+      failureFlash: true,
+    });
+  }
+
   static async registerCompany(req, res) {
     const {
       name, email, cnpj, password, repeat_password: repeatPassword,
