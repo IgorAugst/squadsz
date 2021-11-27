@@ -12,17 +12,17 @@ CREATE TABLE company
     password      char(256)   NOT NULL
 );
 
-CREATE TYPE sexo AS enum ('masculino', 'feminino', 'nb', 'outro');
+CREATE TYPE sexo AS enum ('Masculino', 'Feminino', 'Não-binário', 'Outro');
 
 CREATE TABLE employee
 (
     id int GENERATED ALWAYS AS IDENTITY,
     created_at TIMESTAMP NOT NULL DEFAULT NOW(),
     name           VARCHAR(50) NOT NULL,
-    id_company     int         NOT NULL UNIQUE,
+    id_company     int         NOT NULL,
     social_name    varchar(50),
-    email          varchar(50) NOT NULL,
-    office          varchar(50),
+    email          varchar(50) NOT NULL UNIQUE,
+    office          varchar(50) NOT NULL,
     birth_date     date        NOT NULL,
     gender           sexo        NOT NULL,
     password          char(256)   NOT NULL,
@@ -35,7 +35,7 @@ CREATE TABLE squad
     id                 int GENERATED ALWAYS AS IDENTITY,
     created_at TIMESTAMP NOT NULL DEFAULT NOW(),
     id_manager_employee   int,
-    id_company          int NOT NULL UNIQUE,
+    id_company          int NOT NULL,
     name                     varchar(50),
     PRIMARY KEY (id),
     FOREIGN KEY (id_manager_employee) REFERENCES employee (id),
@@ -52,12 +52,14 @@ CREATE TABLE project(
     id int GENERATED ALWAYS AS IDENTITY ,
     created_at TIMESTAMP NOT NULL DEFAULT NOW(),
     id_squad int,
+    id_company int NOT NULL,
     name varchar(50) NOT NULL ,
     status status,
     description TEXT,
     finished_at date,
     PRIMARY KEY (id),
-    FOREIGN KEY (id_squad) REFERENCES squad(id)
+    FOREIGN KEY (id_squad) REFERENCES squad(id),
+    FOREIGN KEY (id_company) REFERENCES company(id)
 );
 
 CREATE TABLE sprint(

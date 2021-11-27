@@ -20,17 +20,18 @@
       <%- include('../../partials/header.ejs') %>
       <h1 class="m-5">Editar projeto - <%- project.name %> </h1> 
       <div class="m-5">
-        <form action="" method="post">
+        <form action="/empresa/projetos/<%- project.id %> " method="post">
           <div class="row mb-3">
             <div class="col">
               <label for="name">Nome</label>
-              <input type="text" class="form-control" id="name" value="<%- project.name %>">
+              <input type="text" class="form-control" name="name"  id="name" value="<%- project.name %>">
             </div>
             <div class="col">
               <label for="squad">Squad responsável</label>
-              <select type="text" class="form-control" id="squad">
+              <select type="text" name="squad" class="form-control" id="squad">
                 <% squads.forEach(squad => { %>
-                  <option value="<%- squad.value %>"
+                  <option values="">Nenhum</option>
+                  <option value="<%- squad.id %>"
                     <% if (squad.id === project.id_squad) { %>
                       selected
                     <% } %>
@@ -42,20 +43,20 @@
           <div class="row mb-3">
             <div class="col">
               <label for="description">Descrição</label>
-              <textarea class="form-control" id="description" rows="3"><%- project.description %></textarea>
+              <textarea class="form-control" name="description" id="description" rows="3"><%- project.description %></textarea>
             </div>
           </div>
           <div class="row mb-3">
             <div class="col">
               <label for="status">Status</label>
-              <select type="text" class="form-control" id="gender">
-                <option value="to-do" <% if ("para fazer" === project.status) { %>
+              <select type="text" class="form-control" name="status" id="status">
+                <option value="para fazer" <% if ("para fazer" === project.status) { %>
                   selected
                 <% } %>>Para fazer</option>
-                <option value="in_progress" <% if ("em progresso" === project.status) { %>
+                <option value="em progresso" <% if ("em progresso" === project.status) { %>
                   selected
                 <% } %>>Em progresso</option>
-                <option value="done" <% if ("feito" === project.status) { %>
+                <option value="feito" <% if ("feito" === project.status) { %>
                   selected
                 <% } %>>Feito</option>
               </select>
@@ -66,6 +67,15 @@
           </div>
         </form>
       </div>
+      <% if (typeof errors != 'undefined') { %>
+        <div class="alert alert-danger m-5" role="alert">
+          <ul>
+            <% errors.forEach((error) => { %>
+              <li><%= error.message %></li>
+            <% }) %>
+          </ul>
+        </div>
+      <% } %> 
     </div>
   </div>
 </body>

@@ -17,6 +17,7 @@ class Company {
 
     if (!cnpj || !name || !email || !password || !repeatPassword) {
       errors.push({ message: 'Preencha todos os campos' });
+      return errors;
     }
 
     if (!cnpjValidator.isValid(cnpj)) {
@@ -27,18 +28,18 @@ class Company {
       errors.push({ message: 'As senhas não são iguais' });
     }
 
-    if (password === undefined || password.length < 6) {
+    if (password.length < 6) {
       errors.push({ message: 'A senha deve ter no mínimo 6 caracteres' });
     }
 
-    const { rows: rowsCompany } = await pool.query('SELECT * FROM company WHERE email = $1', [email]);
-    const { rows: rowsCpnj } = await pool.query('SELECT * FROM company WHERE cnpj = $1', [cnpj]);
+    const { rows: companies } = await pool.query('SELECT * FROM company WHERE email = $1', [email]);
+    const { rows: cnpjs } = await pool.query('SELECT * FROM company WHERE cnpj = $1', [cnpj]);
 
-    if (rowsCompany.length > 0) {
+    if (companies.length > 0) {
       errors.push({ message: 'Este email já está sendo utilizado' });
     }
 
-    if (rowsCpnj.length > 0) {
+    if (cnpjs.length > 0) {
       errors.push({ message: 'Este CNPJ já está sendo utilizado' });
     }
 
@@ -54,7 +55,7 @@ class Company {
         });
     }
 
-    return { errors };
+    return errors;
   }
 }
 

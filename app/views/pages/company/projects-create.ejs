@@ -20,20 +20,20 @@
       <%- include('../../partials/header.ejs') %>
       <h1 class="m-5">Registrar projeto</h1> 
       <div class="m-5">
-        <form action="" method="post">
+        <form action="/empresa/projetos/registrar" method="post">
           <div class="row mb-3">
             <div class="col">
               <label for="name">Nome</label>
-              <input type="text" class="form-control" id="name" placeholder="Jornal da USP">
+              <input type="text" class="form-control" name="name" id="name" placeholder="Jornal da USP">
             </div>
             <div class="col">
               <label for="social-name">Descrição</label>
-              <textarea class="form-control" id="description" placeholder="Jornal para divulgar informações diárias da Universidade de São Paulo"></textarea>
+              <textarea class="form-control" name="description" id="description" placeholder="Jornal para divulgar informações diárias da Universidade de São Paulo"></textarea>
             </div>
           </div>
           <div class="col w-50 mb-5">
             <label for="squad">Squad responsável</label>
-            <select type="text" class="form-control" id="squad">
+            <select type="text" class="form-control" name="squad" id="squad">
               <% squads.forEach(({ id, name }) => { %>
                 <option value="<%- id %>"><%- name %></option>
               <% }) %> 
@@ -44,6 +44,15 @@
           </div>
         </form>
       </div>
+      <% if (typeof errors != 'undefined') { %>
+        <div class="alert alert-danger m-5" role="alert">
+          <ul>
+            <% errors.forEach((error) => { %>
+              <li><%= error.message %></li>
+            <% }) %>
+          </ul>
+        </div>
+      <% } %> 
     </div>
   </div>
 </body>

@@ -20,17 +20,18 @@
       <%- include('../../partials/header.ejs') %>
       <h1 class="m-5">Editar squad - <%- squad.name %> </h1> 
       <div class="m-5">
-        <form action="" method="post">
+        <form action="/empresa/squads/<%- squad.id %> " method="post">
           <div class="row mb-3">
             <div class="col">
               <label for="name">Nome</label>
-              <input type="text" class="form-control" id="name" value="<%- squad.name %>">
+              <input type="text" class="form-control" name="name" id="name" value="<%- squad.name %>">
             </div>
             <div class="col">
               <label for="manager">Líder do projeto</label>
-              <select type="text" class="form-control" id="manager">
+              <select type="text" class="form-control" name="manager" id="manager">
+                <option value="">Nenhum</option>
                 <% employees.forEach(employee => { %>
-                  <option value="<%- employee.value %>"
+                  <option value="<%- employee.id %>"
                     <% if (employee.id === squad.id_manager) { %>
                       selected
                     <% } %>
@@ -44,6 +45,15 @@
           </div>
         </form>
       </div>
+      <% if (typeof errors != 'undefined') { %>
+        <div class="alert alert-danger m-5" role="alert">
+          <ul>
+            <% errors.forEach((error) => { %>
+              <li><%= error.message %></li>
+            <% }) %>
+          </ul>
+        </div>
+      <% } %> 
     </div>
   </div>
 </body>

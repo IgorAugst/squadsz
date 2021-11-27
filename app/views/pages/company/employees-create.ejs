@@ -24,51 +24,71 @@
           <div class="row mb-3">
             <div class="col">
               <label for="name">Nome</label>
-              <input type="text" class="form-control" id="name" placeholder="Nicholas Fraga Mascarenhas">
+              <input type="text" class="form-control" name="name" id="name" placeholder="Nicholas Fraga Mascarenhas">
             </div>
             <div class="col">
-              <label for="social-name">Nome social (opcional)</label>
-              <input type="text" class="form-control" id="social-name" placeholder="">
+              <label for="social_name">Nome social (opcional)</label>
+              <input type="text" class="form-control" name="social_name" id="social_name" placeholder="">
             </div>
           </div>
           <div class="row mb-3">
             <div class="col">
-              <label for="birth-date">Data de nascimento</label>
-              <input type="text" class="form-control" id="birth-date" placeholder="11/02/1993">
+              <label for="birth_date">Data de nascimento</label>
+              <input type="text" class="form-control" name="birth_date" id="birth_date" placeholder="11/02/1993">
             </div>
             <div class="col">
               <label for="email">Email</label>
-              <input type="email" class="form-control" id="email" placeholder="nichofra@gmail.com">
+              <input type="email" class="form-control" name="email" id="email" placeholder="nichofra@gmail.com">
             </div>
           </div>
           <div class="row mb-3">
             <div class="col">
-              <label for="gender">Sexo</label>
-              <select type="text" class="form-control" id="gender">
-                <option value="masculine">Masculino</option>
-                <option value="feminine">Feminino</option>
-                <option value="non-binary">Não binário</option>
-                <option value="other">Outro</option>
+              <label for="gender" >Sexo</label>
+              <select type="text" class="form-control" name="gender" id="gender">
+                <option value="Masculino">Masculino</option>
+                <option value="Feminino">Feminino</option>
+                <option value="Não-binário">Não-binário</option>
+                <option value="Outro">Outro</option>
               </select>
             </div>
             <div class="col">
-              <label for="squad">Squad</label>
-              <select type="text" class="form-control" id="squad">
+              <label for="squad">Squad (opcional)</label>
+              <select type="text" class="form-control" name="squad" id="squad">
+                <option value="">Nenhum</option>
                 <% squads.forEach(({ id, name }) => { %>
                   <option value="<%- id %>"><%- name %></option>
                 <% }) %> 
               </select>
             </div>
           </div>
+          <div class="row mb-3">
+            <div class="col">
+              <label for="password">Senha</label>
+              <input type="password" name="password" id="password" class="form-control" placeholder="**********">
+            </div>
+            <div class="col">
+              <label for="repeat_password">Repetir senha</label>
+              <input type="password" name="repeat_password" id="repeat_password" class="form-control" placeholder="**********">
+            </div>
+          </div>
           <div class="col w-50 mb-5">
             <label for="office">Cargo</label>
-            <input type="text" class="form-control" id="office" placeholder="Front-end">
+            <input type="text" class="form-control" name="office" id="office" placeholder="Front-end">
           </div>
           <div class="d-block">
             <button type="submit" class="btn btn-primary w-25 text-white py-2">Registrar</button>
           </div>
         </form>
       </div>
+      <% if (typeof errors != 'undefined') { %>
+        <div class="alert alert-danger m-5" role="alert">
+          <ul>
+            <% errors.forEach((error) => { %>
+              <li><%= error.message %></li>
+            <% }) %>
+          </ul>
+        </div>
+      <% } %> 
     </div>
   </div>
 </body>

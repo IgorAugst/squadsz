@@ -24,6 +24,11 @@
             <%= messages.success_msg %>
           </div>
         <% } %>
+        <% if (messages.error_msg) { %> 
+          <div class="alert alert-danger">
+            <%= messages.error_msg %>
+          </div>
+        <% } %>
         <div class="table-top d-flex">
           <div>
             <h1>Squads</h1>

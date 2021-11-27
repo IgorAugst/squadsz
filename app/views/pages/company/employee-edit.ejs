@@ -24,34 +24,34 @@
           <div class="row mb-3">
             <div class="col">
               <label for="name">Nome</label>
-              <input type="text" class="form-control" id="name" value="<%- employee.name %>">
+              <input type="text" class="form-control" name="name" id="name" value="<%- employee.name %>">
             </div>
             <div class="col">
-              <label for="social-name">Nome social (opcional)</label>
-              <input type="text" class="form-control" id="social-name" value="<%- employee.social_name %>">
+              <label for="social_name">Nome social (opcional)</label>
+              <input type="text" class="form-control" name="social_name" id="social_name" value="<%- employee.social_name %>">
             </div>
           </div>
           <div class="row mb-3">
             <div class="col">
-              <label for="birth-date">Data de nascimento</label>
-              <input type="text" class="form-control" id="birth-date" value="<%- employee.birth_date %>">
+              <label for="birth_date">Data de nascimento</label>
+              <input disabled type="text" class="form-control" id="birth_date" value="<%- employee.birth_date %>">
             </div>
             <div class="col">
               <label for="email">Email</label>
-              <input type="email" class="form-control" id="email" value="<%- employee.email %> ">
+              <input type="email" class="form-control" name="email" id="email" value="<%- employee.email %> ">
             </div>
           </div>
           <div class="row mb-3">
             <div class="col">
               <label for="gender">Sexo</label>
-              <select type="text" class="form-control" id="gender">
-                <option value="masculine" <% if ("Masculino" === employee.gender) { %>
+              <select type="text" name="gender" class="form-control" id="gender">
+                <option value="Masculino" <% if ("Masculino" === employee.gender) { %>
                   selected
                 <% } %>>Masculino</option>
-                <option value="feminine" <% if ("Feminino" === employee.gender) { %>
+                <option value="Feminino" <% if ("Feminino" === employee.gender) { %>
                   selected
                 <% } %>>Feminino</option>
-                <option value="non-binary" <% if ("Não binário" === employee.gender) { %>
+                <option value="Não-binário" <% if ("Não-binário" === employee.gender) { %>
                   selected
                 <% } %>>Não binário</option>
                 <option value="other" <% if ("Outro" === employee.gender) { %>
@@ -61,9 +61,10 @@
             </div>
             <div class="col">
               <label for="squad">Squad</label>
-              <select type="text" class="form-control" id="squad">
+              <select type="text" name="squad" class="form-control" id="squad">
+                <option value="">Nenhum</option>
                 <% squads.forEach(squad => { %>
-                  <option value="<%- squad.value %>"
+                  <option value="<%- squad.id %>"
                     <% if (squad.id === employee.id_squad) { %>
                       selected
                     <% } %>
@@ -74,13 +75,22 @@
           </div>
           <div class="col w-50 mb-5">
             <label for="office">Cargo</label>
-            <input type="text" class="form-control" id="office" value="<%- employee.office %>">
+            <input type="text" class="form-control" name="office" id="office" value="<%- employee.office %>">
           </div>
           <div class="d-block">
             <button type="submit" class="btn btn-primary w-25 text-white py-2">Editar</button>
           </div>
         </form>
       </div>
+      <% if (typeof errors != 'undefined') { %>
+        <div class="alert alert-danger m-5" role="alert">
+          <ul>
+            <% errors.forEach((error) => { %>
+              <li><%= error.message %></li>
+            <% }) %>
+          </ul>
+        </div>
+      <% } %> 
     </div>
   </div>
 </body>
