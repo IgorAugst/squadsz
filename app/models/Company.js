@@ -1,14 +1,26 @@
 const bcrypt = require('bcrypt');
+const { cnpj: cnpjValidator } = require('cpf-cnpj-validator');
 const pool = require('../db/connection');
 
 class Company {
-  static async insert({
+  static getCompanyProps(req, res) {
+    return {
+      profile: req.user,
+      company: true,
+    };
+  }
+
+  static async create({
     cnpj, name, email, password, repeatPassword,
   }) {
     const errors = [];
 
     if (!cnpj || !name || !email || !password || !repeatPassword) {
       errors.push({ message: 'Preencha todos os campos' });
+    }
+
+    if (!cnpjValidator.isValid(cnpj)) {
+      errors.push({ message: 'CNPJ inválido' });
     }
 
     if (password !== repeatPassword) {
@@ -19,17 +31,16 @@ class Company {
       errors.push({ message: 'A senha deve ter no mínimo 6 caracteres' });
     }
 
-    pool.query('SELECT * FROM company WHERE email = $1', [email], (err, result) => {
-      if (result && result.rows.length > 0) {
-        errors.push({ message: 'E-mail já cadastrado' });
-      }
-    });
+    const { rows: rowsCompany } = await pool.query('SELECT * FROM company WHERE email = $1', [email]);
+    const { rows: rowsCpnj } = await pool.query('SELECT * FROM company WHERE cnpj = $1', [cnpj]);
 
-    pool.query('SELECT * FROM company WHERE cnpj = $1', [cnpj], (err, result) => {
-      if (result && result.rows.length > 0) {
-        errors.push({ message: 'CNPJ já cadastrado' });
-      }
-    });
+    if (rowsCompany.length > 0) {
+      errors.push({ message: 'Este email já está sendo utilizado' });
+    }
+
+    if (rowsCpnj.length > 0) {
+      errors.push({ message: 'Este CNPJ já está sendo utilizado' });
+    }
 
     if (errors.length === 0) {
       const salt = bcrypt.genSaltSync(10);

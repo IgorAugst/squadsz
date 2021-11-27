@@ -20,15 +20,16 @@
       <%- include('../../partials/header.ejs') %>
       <h1 class="m-5">Registrar squad</h1> 
       <div class="m-5">
-        <form action="" method="post">
+        <form action="/empresa/squads/registrar" method="post">
           <div class="row mb-3">
             <div class="col">
               <label for="name">Nome</label>
-              <input type="text" class="form-control" id="name" placeholder="Epsilon">
+              <input type="text" class="form-control" name="name" id="name" placeholder="Epsilon">
             </div>
             <div class="col">
               <label for="manager">Líder do projeto</label>
-              <select type="text" class="form-control" id="manager">
+              <select type="text" class="form-control" name="manager" id="manager">
+                <option value=""></option>
                 <% employees.forEach(({ id, name }) => { %>
                   <option value="<%- id %>"><%- name %></option>
                 <% }) %> 
@@ -39,6 +40,15 @@
             <button type="submit" class="btn btn-primary w-25 text-white py-2">Registrar</button>
           </div>
         </form>
+        <% if (typeof errors != 'undefined') { %>
+          <div class="alert alert-danger mt-5" role="alert">
+            <ul>
+              <% errors.forEach((error) => { %>
+                <li><%= error.message %></li>
+              <% }) %>
+            </ul>
+          </div>
+        <% } %> 
       </div>
     </div>
   </div>

@@ -15,7 +15,7 @@ class AuthController {
       name, email, cnpj, password, repeat_password: repeatPassword,
     } = req.body;
 
-    const { errors } = await Company.insert({
+    const { errors } = await Company.create({
       name,
       email,
       cnpj,

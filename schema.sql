@@ -6,7 +6,7 @@ CREATE TABLE company
 (
     id serial PRIMARY KEY,
     created_at TIMESTAMP NOT NULL DEFAULT NOW(),
-    cnpj       int         NOT NULL UNIQUE,
+    cnpj       varchar(50)         NOT NULL UNIQUE,
     name       varchar(50) NOT NULL,
     email      varchar(50) NOT NULL UNIQUE,
     password      char(256)   NOT NULL
@@ -35,14 +35,12 @@ CREATE TABLE squad
     id                 int GENERATED ALWAYS AS IDENTITY,
     created_at TIMESTAMP NOT NULL DEFAULT NOW(),
     id_manager_employee   int,
+    id_company          int NOT NULL UNIQUE,
     name                     varchar(50),
     PRIMARY KEY (id),
-    FOREIGN KEY (id_manager_employee) REFERENCES employee (id)
+    FOREIGN KEY (id_manager_employee) REFERENCES employee (id),
+    FOREIGN KEY (id_company) REFERENCES company (id)
 );
-
-ALTER TABLE company
-    ADD id_squad int,
-    ADD FOREIGN KEY (id_squad) REFERENCES squad(id);
 
 ALTER  TABLE employee
 add id_squad int,

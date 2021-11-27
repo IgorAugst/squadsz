@@ -1,12 +1,7 @@
 const { employees } = require('../mocks/Employees');
 const { squads } = require('../mocks/Squads');
 const { projects } = require('../mocks/Projects');
-const { company } = require('../mocks/Company');
-
-const companyProps = {
-  profile: company,
-  company: true,
-};
+const Company = require('../models/Company');
 
 class CompanyController {
   static login(req, res) {
@@ -28,7 +23,7 @@ class CompanyController {
       return res.redirect('/empresa/entrar');
     }
     return res.render('company/dashboard', {
-      ...companyProps,
+      ...Company.getCompanyProps(req, res),
     });
   }
 
@@ -55,18 +50,7 @@ class CompanyController {
 
     return res.render('company/squads', {
       squads: renderSquads,
-      ...companyProps,
-    });
-  }
-
-  static renderSquadsRegister(req, res) {
-    if (!req.isAuthenticated()) {
-      return res.redirect('/empresa/entrar');
-    }
-
-    return res.render('company/squads-create', {
-      employees,
-      ...companyProps,
+      ...Company.getCompanyProps(req, res),
     });
   }
 
@@ -80,7 +64,7 @@ class CompanyController {
     return res.render('company/squads-edit', {
       squad,
       employees,
-      ...companyProps,
+      ...Company.getCompanyProps(req, res),
     });
   }
 
@@ -98,7 +82,7 @@ class CompanyController {
     });
     return res.render('company/employees', {
       employees: renderEmployees,
-      ...companyProps,
+      ...Company.getCompanyProps(req, res),
     });
   }
 
@@ -109,7 +93,7 @@ class CompanyController {
 
     return res.render('company/employees-create', {
       squads,
-      ...companyProps,
+      ...Company.getCompanyProps(req, res),
     });
   }
 
@@ -123,7 +107,7 @@ class CompanyController {
     return res.render('company/employee-edit', {
       employee,
       squads,
-      ...companyProps,
+      ...Company.getCompanyProps(req, res),
     });
   }
 
@@ -141,7 +125,7 @@ class CompanyController {
     });
     return res.render('company/projects', {
       projects: renderProjects,
-      ...companyProps,
+      ...Company.getCompanyProps(req, res),
     });
   }
 
@@ -152,7 +136,7 @@ class CompanyController {
 
     return res.render('company/projects-create', {
       squads,
-      ...companyProps,
+      ...Company.getCompanyProps(req, res),
     });
   }
 
@@ -166,7 +150,7 @@ class CompanyController {
     return res.render('company/projects-edit', {
       project,
       squads,
-      ...companyProps,
+      ...Company.getCompanyProps(req, res),
     });
   }
 }

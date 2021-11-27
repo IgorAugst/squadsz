@@ -3,7 +3,7 @@ const passport = require('passport');
 
 const routes = express.Router();
 const {
-  CompanyController, EmployeeController, AuthController,
+  CompanyController, EmployeeController, AuthController, SquadController,
 } = require('./controllers');
 
 routes.get('/', CompanyController.login);
@@ -11,7 +11,8 @@ routes.get('/empresa', CompanyController.dashboard);
 routes.get('/empresa/entrar', CompanyController.login);
 routes.get('/empresa/registrar', CompanyController.register);
 routes.get('/empresa/squads', CompanyController.squads);
-routes.get('/empresa/squads/registrar', CompanyController.renderSquadsRegister);
+routes.post('/empresa/squads/registrar', SquadController.register);
+routes.get('/empresa/squads/registrar', SquadController.renderRegister);
 routes.get('/empresa/squads/:id', CompanyController.renderSquadsEdit);
 routes.get('/empresa/funcionarios', CompanyController.renderEmployees);
 routes.get('/empresa/funcionarios/registrar', CompanyController.renderEmployeesRegister);
