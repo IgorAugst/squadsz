@@ -1,5 +1,7 @@
 const { getFormattedProjectsByCompanyId } = require('../utils');
-const { Company, Project, Squad } = require('../models');
+const {
+  Company, Project, Squad,
+} = require('../models');
 
 class ProjectController {
   static async index(req, res) {
@@ -7,9 +9,9 @@ class ProjectController {
       return res.redirect('/empresa/entrar');
     }
 
-    const { id: companyId } = req.user;
+    const { id: idCompany } = req.user;
 
-    const projects = await getFormattedProjectsByCompanyId(companyId);
+    const projects = await getFormattedProjectsByCompanyId(idCompany);
 
     return res.render('company/projects', {
       projects,
@@ -17,28 +19,45 @@ class ProjectController {
     });
   }
 
-  static async register(req, res) {
+  static async create(req, res) {
     const {
       name,
       description,
       squad,
     } = req.body;
 
-    const { id: companyId } = req.user;
+    const { id: idCompany } = req.user;
 
-    const errors = await Project.create({
-      name,
-      company: companyId,
-      description,
-      squad,
-    });
+    const errors = [];
 
-    if (errors.length === 0) {
-      req.flash('success_msg', 'Projeto criado com sucesso');
-      res.redirect('/empresa/projetos');
+    if (!name || !description) {
+      errors.push({ message: 'Preencha todos os campos obrigatórios' });
+    } else {
+      const project = await Project.findOne({ where: { name, id_company: idCompany } });
+
+      if (project) {
+        errors.push({ message: 'Este projeto já existe' });
+      }
+
+      if (errors.length === 0) {
+        try {
+          const { id } = await Project.create({
+            name,
+            id_company: idCompany,
+            description,
+            id_squad: squad === '' ? null : squad,
+          });
+
+          req.flash('success_msg', 'Projeto criado com sucesso');
+          return res.redirect(`/empresa/projetos/${id}`);
+        } catch (error) {
+          req.flash('error_msg', 'Erro ao criar projeto');
+          return res.redirect('/empresa/projetos/registrar');
+        }
+      }
     }
 
-    const squads = await Squad.getAllByCompanyId(companyId);
+    const squads = await Squad.findAll({ where: { id_company: idCompany } });
 
     return res.render('company/projects-create', {
       squads,
@@ -47,14 +66,14 @@ class ProjectController {
     });
   }
 
-  static async registerView(req, res) {
+  static async createView(req, res) {
     if (!req.isAuthenticated()) {
       return res.redirect('/empresa/entrar');
     }
 
-    const { id: companyId } = req.user;
+    const { id: idCompany } = req.user;
 
-    const squads = await Squad.getAllByCompanyId(companyId);
+    const squads = await Squad.findAll({ where: { id_company: idCompany } });
 
     return res.render('company/projects-create', {
       squads,
@@ -68,26 +87,41 @@ class ProjectController {
     }
 
     const { id: projectId } = req.params;
-    const { id: companyId } = req.user;
+    const { id: idCompany } = req.user;
     const {
       name, description, squad, status,
     } = req.body;
 
-    const errors = await Project.update({
-      id: projectId,
-      name,
-      description,
-      squad,
-      status,
-    });
+    const errors = [];
 
-    if (errors.length === 0) {
-      req.flash('success_msg', 'Projeto atualizado com sucesso');
-      return res.redirect('/empresa/projetos');
+    if (!name || !description || status === '') {
+      errors.push({ message: 'Preencha todos os campos obrigatórios' });
+    } else {
+      const project = await Project.findOne({ where: { name, id_company: idCompany } });
+      if (project && project.id !== Number(projectId)) {
+        errors.push({ message: 'Este projeto já existe' });
+      }
+
+      if (errors.length === 0) {
+        try {
+          await Project.update(projectId, {
+            name,
+            description,
+            id_squad: squad === '' ? null : squad,
+            status,
+          });
+
+          req.flash('success_msg', 'Projeto atualizado com sucesso');
+          return res.redirect(`/empresa/projetos/${projectId}`);
+        } catch (error) {
+          req.flash('error_msg', 'Erro ao atualizar projeto');
+          return res.redirect(`/empresa/projetos/${projectId}`);
+        }
+      }
     }
 
-    const project = await Project.getById(projectId);
-    const squads = await Squad.getAllByCompanyId(companyId);
+    const project = await Project.find(projectId);
+    const squads = await Squad.findAll({ where: { id_company: idCompany } });
 
     return res.render('company/projects-edit', {
       project,
@@ -103,10 +137,10 @@ class ProjectController {
     }
 
     const { id: projectId } = req.params;
-    const { id: companyId } = req.user;
+    const { id: idCompany } = req.user;
 
-    const project = await Project.getById(projectId);
-    const squads = await Squad.getAllByCompanyId(companyId);
+    const project = await Project.find(projectId);
+    const squads = await Squad.findAll({ where: { id_company: idCompany } });
 
     return res.render('company/projects-edit', {
       project,

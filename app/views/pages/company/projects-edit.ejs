@@ -29,8 +29,8 @@
             <div class="col">
               <label for="squad">Squad responsável</label>
               <select type="text" name="squad" class="form-control" id="squad">
+                <option values="">Nenhum</option>
                 <% squads.forEach(squad => { %>
-                  <option values="">Nenhum</option>
                   <option value="<%- squad.id %>"
                     <% if (squad.id === project.id_squad) { %>
                       selected
@@ -76,6 +76,16 @@
           </ul>
         </div>
       <% } %> 
+      <% if (messages.success_msg) { %> 
+        <div class="alert alert-success m-5">
+          <%= messages.success_msg %>
+        </div>
+      <% } %>
+      <% if (messages.error_msg) { %> 
+        <div class="alert alert-danger m-5">
+          <%= messages.error_msg %>
+        </div>
+      <% } %>
     </div>
   </div>
 </body>

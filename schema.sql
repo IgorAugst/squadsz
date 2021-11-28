@@ -9,7 +9,7 @@ CREATE TABLE company
     cnpj       varchar(50)         NOT NULL UNIQUE,
     name       varchar(50) NOT NULL,
     email      varchar(50) NOT NULL UNIQUE,
-    password      char(256)   NOT NULL
+    password   varchar(256)   NOT NULL
 );
 
 CREATE TYPE sexo AS enum ('Masculino', 'Feminino', 'Não-binário', 'Outro');
@@ -25,7 +25,7 @@ CREATE TABLE employee
     office          varchar(50) NOT NULL,
     birth_date     date        NOT NULL,
     gender           sexo        NOT NULL,
-    password          char(256)   NOT NULL,
+    password          varchar(256)   NOT NULL,
     PRIMARY KEY (id),
     FOREIGN KEY (id_company) REFERENCES company (id)
 );
@@ -33,7 +33,7 @@ CREATE TABLE employee
 CREATE TABLE squad
 (
     id                 int GENERATED ALWAYS AS IDENTITY,
-    created_at TIMESTAMP NOT NULL DEFAULT NOW(),
+    created_at TIMESTAMP NOT NULL DEFAULT NOW(),k
     id_manager_employee   int,
     id_company          int NOT NULL,
     name                     varchar(50),

@@ -8,7 +8,7 @@ class CompanyController {
     return res.render('company/login');
   }
 
-  static register(req, res) {
+  static create(req, res) {
     if (req.isAuthenticated()) {
       return res.redirect('/empresa');
     }

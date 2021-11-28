@@ -54,6 +54,16 @@
           </ul>
         </div>
       <% } %> 
+      <% if (messages.success_msg) { %> 
+        <div class="alert alert-success m-5">
+          <%= messages.success_msg %>
+        </div>
+      <% } %>
+      <% if (messages.error_msg) { %> 
+        <div class="alert alert-danger m-5">
+          <%= messages.error_msg %>
+        </div>
+      <% } %>
     </div>
   </div>
 </body>

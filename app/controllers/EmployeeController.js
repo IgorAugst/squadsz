@@ -1,4 +1,7 @@
-const { Squad, Company, Employee } = require('../models');
+const bcrypt = require('bcrypt');
+const {
+  Company, Employee, Squad,
+} = require('../models');
 
 class EmployeeController {
   static async index(req, res) {
@@ -8,12 +11,12 @@ class EmployeeController {
 
     const { id } = req.user;
 
-    const squads = await Squad.getAllByCompanyId(id);
-    const employees = await Employee.getAllByCompanyId(id);
+    const squads = await Squad.findAll({ where: { id_company: id } });
+    const employees = await Employee.findAll({ where: { id_company: id } });
 
     const employeesMap = employees.map((employee) => {
       const { name: squad } = squads.find(
-        ({ id: squadId }) => squadId === Number(employee.id_squad),
+        ({ id: idSquad }) => idSquad === Number(employee.id_squad),
       ) || {};
       return {
         ...employee,
@@ -35,11 +38,11 @@ class EmployeeController {
       return res.redirect('/empresa/entrar');
     }
 
-    const { id: companyId } = req.user;
-    const { id: employeeId } = req.params;
+    const { id: idCompany } = req.user;
+    const { id: idEmployee } = req.params;
 
-    const employee = await Employee.getById(employeeId);
-    const squads = await Squad.getAllByCompanyId(companyId);
+    const employee = await Employee.find(idEmployee);
+    const squads = await Squad.findAll({ where: { id_company: idCompany } });
 
     return res.render('company/employee-edit', {
       employee,
@@ -53,30 +56,46 @@ class EmployeeController {
       return res.redirect('/');
     }
 
-    const { id: employeeId } = req.params;
-    const { id: companyId } = req.user;
+    const { id: idEmployee } = req.params;
+    const { id: idCompany } = req.user;
     const {
       name, email, gender, office, social_name: socialName, squad,
     } = req.body;
 
-    const errors = await Employee.update({
-      id: employeeId,
-      email,
-      gender,
-      company: companyId,
-      name,
-      office,
-      socialName,
-      squad,
-    });
+    const errors = [];
 
-    if (errors.length === 0) {
-      req.flash('success_msg', 'Funcionário atualizado com sucesso');
-      return res.redirect('/empresa/funcionarios');
+    if (!name || !email || !gender || !office) {
+      errors.push({ message: 'Preencha todos os campos obrigatórios' });
+    } else {
+      const employee = await Employee.findOne({ where: { email, id_company: idCompany } });
+
+      if (employee && employee.id !== Number(idEmployee)) {
+        errors.push({ message: 'E-mail já cadastrado' });
+      }
+
+      if (errors.length === 0) {
+        try {
+          await Employee.update(idEmployee, {
+            email,
+            gender,
+            id_company: idCompany,
+            name,
+            office,
+            social_name: socialName,
+            id_squad: squad === '' ? null : squad,
+          });
+
+          req.flash('success_msg', 'Funcionario editado com sucesso');
+          return res.redirect(`/empresa/funcionarios/${idEmployee}`);
+        } catch (error) {
+          req.flash('error_msg', 'Erro ao editar funcionario');
+          return res.redirect('/empresa/funcionarios/editar');
+        }
+      }
     }
 
-    const squads = await Squad.getAllByCompanyId(companyId);
-    const employee = await Employee.getById(employeeId);
+    const squads = await Squad.findAll({ where: { id_company: idCompany } });
+    const employee = await Employee.find(idEmployee);
 
     return res.render('company/employee-edit', {
       errors,
@@ -86,12 +105,12 @@ class EmployeeController {
     });
   }
 
-  static async registerView(req, res) {
+  static async createView(req, res) {
     if (!req.isAuthenticated()) {
       return res.redirect('/empresa/entrar');
     }
 
-    const squads = await Squad.getAllByCompanyId(req.user.id);
+    const squads = await Squad.findAll({ where: { id_company: req.user.id } });
 
     return res.render('company/employees-create', {
       squads,
@@ -99,7 +118,7 @@ class EmployeeController {
     });
   }
 
-  static async register(req, res) {
+  static async create(req, res) {
     const {
       name, birth_date:
       birthDate,
@@ -111,29 +130,56 @@ class EmployeeController {
       password,
       repeat_password: repeatPassword,
     } = req.body;
-    const { id: company } = req.user;
+    const { id: idCompany } = req.user;
 
-    const errors = await Employee.create({
-      name,
-      birthDate,
-      company,
-      squad,
-      email,
-      gender,
-      office,
-      socialName,
-      password,
-      repeatPassword,
-    });
+    const errors = [];
 
-    if (errors.length === 0) {
-      req.flash('success_msg', 'Funcionário criado com sucesso');
-      res.redirect('/empresa/funcionarios');
+    if (!name || !birthDate || !email || !gender || !office || !password || !repeatPassword) {
+      errors.push({ message: 'Preencha todos os campos obrigatórios' });
+    } else {
+      if (password !== repeatPassword) {
+        errors.push({ message: 'As senhas não são iguais' });
+      }
+
+      if (password.length < 6) {
+        errors.push({ message: 'A senha deve ter no mínimo 6 caracteres' });
+      }
+
+      const employee = await Employee.findOne({ where: { email, id_company: idCompany } });
+
+      if (employee) {
+        errors.push({ message: 'E-mail já cadastrado' });
+      }
+
+      if (errors.length === 0) {
+        try {
+          const salt = bcrypt.genSaltSync(10);
+          const hash = bcrypt.hashSync(password, salt);
+
+          const { id } = await Employee.create({
+            name,
+            birth_date: birthDate,
+            id_company: idCompany,
+            id_squad: squad === '' ? null : squad,
+            email,
+            gender,
+            office,
+            social_name: socialName,
+            password: hash,
+          });
+
+          req.flash('success_msg', 'Funcionário criado com sucesso');
+          return res.redirect(`/empresa/funcionarios/${id}`);
+        } catch (error) {
+          req.flash('error_msg', 'Erro ao criar funcionario');
+          return res.redirect('/empresa/funcionarios/registrar');
+        }
+      }
     }
 
-    const squads = await Squad.getAllByCompanyId(req.user.id);
+    const squads = await Squad.findAll({ where: { id_company: idCompany } });
 
-    res.render('company/employees-create', {
+    return res.render('company/employees-create', {
       squads,
       errors,
       ...Company.getCompanyProps(req),

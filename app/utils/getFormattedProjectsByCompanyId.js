@@ -6,7 +6,7 @@ async function getFormattedProjectsByCompanyId(id) {
 
   const formattedProjectsByCompanyId = projects.map((project) => {
     const { name: squad } = squads.find(
-      ({ id: squadId }) => squadId === Number(project.id_squad),
+      ({ id: idSquad }) => idSquad === Number(project.id_squad),
     ) || {};
     return {
       ...project,

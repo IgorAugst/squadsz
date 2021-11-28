@@ -10,7 +10,7 @@ class AuthController {
     });
   }
 
-  static async registerCompany(req, res) {
+  static async createCompany(req, res) {
     const {
       name, email, cnpj, password, repeat_password: repeatPassword,
     } = req.body;

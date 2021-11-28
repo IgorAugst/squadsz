@@ -1,11 +1,15 @@
-const Squad = require('./Squad');
 const Company = require('./Company');
-const Employee = require('./Employee');
-const Project = require('./Project');
+const ORM = require('../orm');
+
+const Project = new ORM('project');
+const Squad = new ORM('squad');
+const CompanyORM = new ORM('company');
+const Employee = new ORM('employee');
 
 module.exports = {
   Company,
-  Employee,
-  Squad,
   Project,
+  Squad,
+  CompanyORM,
+  Employee,
 };

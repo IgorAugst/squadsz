@@ -54,7 +54,7 @@
                 <option value="Não-binário" <% if ("Não-binário" === employee.gender) { %>
                   selected
                 <% } %>>Não binário</option>
-                <option value="other" <% if ("Outro" === employee.gender) { %>
+                <option value="Outro" <% if ("Outro" === employee.gender) { %>
                   selected
                 <% } %>>Outro</option>
               </select>
@@ -91,6 +91,16 @@
           </ul>
         </div>
       <% } %> 
+      <% if (messages.success_msg) { %> 
+        <div class="alert alert-success m-5">
+          <%= messages.success_msg %>
+        </div>
+      <% } %>
+      <% if (messages.error_msg) { %> 
+        <div class="alert alert-danger m-5">
+          <%= messages.error_msg %>
+        </div>
+      <% } %>
     </div>
   </div>
 </body>

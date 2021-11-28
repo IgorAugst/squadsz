@@ -34,6 +34,7 @@
           <div class="col w-50 mb-5">
             <label for="squad">Squad responsável</label>
             <select type="text" class="form-control" name="squad" id="squad">
+              <option value="">Nenhum</option>
               <% squads.forEach(({ id, name }) => { %>
                 <option value="<%- id %>"><%- name %></option>
               <% }) %> 
@@ -53,6 +54,11 @@
           </ul>
         </div>
       <% } %> 
+      <% if (messages.error_msg) { %> 
+        <div class="alert alert-danger m-5">
+          <%= messages.error_msg %>
+        </div>
+      <% } %>
     </div>
   </div>
 </body>
