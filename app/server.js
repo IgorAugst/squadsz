@@ -1,14 +1,11 @@
 const dotenv = require('dotenv');
 const express = require('express');
-const flash = require('express-flash');
 const session = require('express-session');
+var cookieParser = require('cookie-parser');
+const flash = require('express-flash')
 const passport = require('passport');
 const { NODE_PORT } = require('../config/base');
 const routes = require('./routes');
-
-const initializePassport = require('./auth');
-
-initializePassport(passport);
 
 dotenv.config();
 
@@ -16,16 +13,14 @@ const app = express();
 
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
-app.use(session({
-  secret: 'secret',
-  resave: false,
-  saveUninitialized: false,
-}));
-app.use(passport.initialize());
-app.use(passport.session());
-app.use(flash());
 app.use('/public', express.static('public'));
 app.use(routes);
+app.use(flash());
+app.use(cookieParser);
+app.use(session({
+  secret:"123456789",
+  resave: false,
+  saveUninitialized:true}));
 app.set('views', 'app/views/pages');
 app.set('view engine', 'ejs');
 

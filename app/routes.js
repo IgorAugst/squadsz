@@ -1,5 +1,4 @@
 const express = require('express');
-const passport = require('passport');
 
 const routes = express.Router();
 
@@ -36,12 +35,5 @@ routes.post('/empresa/projetos/:id', ProjectController.update);
 
 routes.get('/funcionario/entrar', EmployeeController.renderLogin);
 
-routes.post('/empresa/registrar', AuthController.createCompany);
-
-routes.post('/empresa/entrar', passport.authenticate('local', {
-  successRedirect: '/empresa',
-  failureRedirect: '/',
-  failureFlash: true,
-}));
-
+routes.post('/empresa/entrar', CompanyController.entrar);
 module.exports = routes;

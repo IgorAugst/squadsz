@@ -10,6 +10,16 @@ class Company {
     };
   }
 
+  static async login(email){
+    const rows = await pool.query('SELECT * FROM company WHERE email = $1', [email])
+    if(rows.rowCount == 0){
+      return null;
+    }
+    
+    return rows.rows[0].password;
+    
+  }
+
   static async create({
     cnpj, name, email, password, repeatPassword,
   }) {
