@@ -32,7 +32,7 @@
                 <option value="">Nenhum</option>
                 <% employees.forEach(employee => { %>
                   <option value="<%- employee.id %>"
-                    <% if (employee.id === squad.id_manager) { %>
+                    <% if (employee.id === squad.id_manager_employee) { %>
                       selected
                     <% } %>
                     ><%- employee.name %></option>

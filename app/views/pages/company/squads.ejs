@@ -47,13 +47,13 @@
             </tr>
           </thead>
           <tbody>
-            <% squads.forEach(({ id, name, manager, lenEmployees, lenProjects }) => { %>
+            <% squads.forEach(({ id, name, manager, employees, projects }) => { %>
                 <tr onclick="window.location='/empresa/squads/<%- id %>'">
                   <th scope="row"><%- id %></th>
                   <td><%- name %></td>
                   <td><%- manager %></td>
-                  <td><%- lenEmployees %></td>
-                  <td><%- lenProjects %></td>
+                  <td><%- employees %></td>
+                  <td><%- projects %></td>
                 </tr>
             <% }) %> 
           </tbody>

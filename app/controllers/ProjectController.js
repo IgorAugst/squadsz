@@ -1,4 +1,3 @@
-const { getFormattedProjectsByCompanyId } = require('../utils');
 const {
   Company, Project, Squad,
 } = require('../models');
@@ -9,9 +8,11 @@ class ProjectController {
       return res.redirect('/empresa/entrar');
     }
 
-    const { id: idCompany } = req.user;
-
-    const projects = await getFormattedProjectsByCompanyId(idCompany);
+    const projects = await Project.rightJoin({
+      related: ['squad'],
+      select: ['squad.name as squad', 'project.*'],
+      on: ['squad.id = project.id_squad'],
+    });
 
     return res.render('company/projects', {
       projects,
@@ -42,10 +43,11 @@ class ProjectController {
       if (errors.length === 0) {
         try {
           const { id } = await Project.create({
-            name,
             id_company: idCompany,
-            description,
             id_squad: squad === '' ? null : squad,
+            name,
+            description,
+            status: 'para fazer',
           });
 
           req.flash('success_msg', 'Projeto criado com sucesso');

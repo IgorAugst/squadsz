@@ -5,8 +5,8 @@ class ORM {
     this.table = table;
   }
 
-  async all() {
-    const query = `SELECT * FROM ${this.table}`;
+  async all(select = ['*']) {
+    const query = `SELECT ${select.join(', ')} FROM ${this.table}`;
     try {
       const { rows } = await pool.query(query);
       return rows;
@@ -47,11 +47,11 @@ class ORM {
     }
   }
 
-  async findOne({ where }) {
+  async findOne({ select = ['*'], where }) {
     const values = Object.values(where);
     const conditions = Object.keys(where).map((value, index) => `${value} = $${index + 1}`).join(' AND ');
 
-    const query = `SELECT * FROM ${this.table} WHERE ${conditions}`;
+    const query = `SELECT ${select.join(', ')} FROM ${this.table} WHERE ${conditions}`;
 
     try {
       const { rows } = await pool.query(query, values);
@@ -62,11 +62,11 @@ class ORM {
     }
   }
 
-  async findAll({ where }) {
+  async findAll({ select = ['*'], where }) {
     const values = Object.values(where);
     const conditions = Object.keys(where).map((value, index) => `${value} = $${index + 1}`).join(' AND ');
 
-    const query = `SELECT * FROM ${this.table} WHERE ${conditions}`;
+    const query = `SELECT ${select.join(', ')} FROM ${this.table} WHERE ${conditions}`;
 
     try {
       const { rows } = await pool.query(query, values);
@@ -101,8 +101,8 @@ class ORM {
     }
   }
 
-  async rightJoin(table, on) {
-    const query = `SELECT * FROM ${this.table} RIGHT JOIN ${table} ON ${on}`;
+  async rightJoin({ related = [], on = [], select = ['*'] }) {
+    const query = `SELECT ${select.join(', ')} FROM ${related.join(', ')} RIGHT JOIN ${this.table} ON ${on.join(' AND ')}`;
 
     try {
       const { rows } = await pool.query(query);

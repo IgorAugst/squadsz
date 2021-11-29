@@ -1,6 +1,5 @@
-const { getFormattedSquadByCompanyId } = require('../utils');
 const {
-  Company, Squad, Employee,
+  Company, Squad, Employee, Project,
 } = require('../models');
 
 class SquadController {
@@ -9,9 +8,22 @@ class SquadController {
       return res.redirect('/');
     }
 
-    const { id: idCompany } = req.user;
+    const rowsSquads = await Squad.rightJoin({
+      related: ['employee'],
+      select: ['employee.name as manager', 'squad.*'],
+      on: ['employee.id = squad.id_manager_employee'],
+    });
 
-    const squads = await getFormattedSquadByCompanyId(idCompany);
+    const squads = await Promise.all(rowsSquads.map(async (squad) => {
+      const employees = await Employee.findAll({ select: ['COUNT(*)'], where: { id_squad: squad.id } }) || {};
+      const projects = await Project.findAll({ select: ['COUNT(*)'], where: { id_squad: squad.id } }) || {};
+
+      return {
+        ...squad,
+        employees: employees[0].count,
+        projects: projects[0].count,
+      };
+    }));
 
     return res.render('company/squads', {
       squads,
