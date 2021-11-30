@@ -9,6 +9,7 @@ CREATE TABLE company
     cnpj       varchar(50)         NOT NULL UNIQUE,
     name       varchar(50) NOT NULL,
     email      varchar(50) NOT NULL UNIQUE,
+    type           int         DEFAULT 0,
     password   varchar(256)   NOT NULL
 );
 
@@ -25,6 +26,7 @@ CREATE TABLE employee
     office          varchar(50) NOT NULL,
     birth_date     date        NOT NULL,
     gender           sexo        NOT NULL,
+    type            int         DEFAULT 1,
     password          varchar(256)   NOT NULL,
     PRIMARY KEY (id),
     FOREIGN KEY (id_company) REFERENCES company (id)

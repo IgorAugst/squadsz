@@ -52,7 +52,7 @@ class EmployeeController {
   }
 
   static async update(req, res) {
-    if (!req.isAuthenticated()) {
+    if (!req.isAuthenticated() || req.user.type != 0) {
       return res.redirect('/');
     }
 
@@ -106,7 +106,7 @@ class EmployeeController {
   }
 
   static async createView(req, res) {
-    if (!req.isAuthenticated()) {
+    if (!req.isAuthenticated() || req.user.type != 0) {
       return res.redirect('/empresa/entrar');
     }
 
