@@ -1,5 +1,5 @@
-const bcrypt = require('bcrypt');
 const { cnpj: cnpjValidator } = require('cpf-cnpj-validator');
+const { generateHash } = require('../utils');
 const pool = require('../db/connection');
 
 class Company {
@@ -11,11 +11,11 @@ class Company {
   }
 
   static async create({
-    cnpj, name, email, password, repeatPassword,
+    cnpj, name, email, password, confirmPassword,
   }) {
     const errors = [];
 
-    if (!cnpj || !name || !email || !password || !repeatPassword) {
+    if (!cnpj || !name || !email || !password || !confirmPassword) {
       errors.push({ message: 'Preencha todos os campos' });
       return errors;
     }
@@ -24,7 +24,7 @@ class Company {
       errors.push({ message: 'CNPJ inválido' });
     }
 
-    if (password !== repeatPassword) {
+    if (password !== confirmPassword) {
       errors.push({ message: 'As senhas não são iguais' });
     }
 
@@ -44,8 +44,7 @@ class Company {
     }
 
     if (errors.length === 0) {
-      const salt = bcrypt.genSaltSync(10);
-      const hash = bcrypt.hashSync(password, salt);
+      const hash = generateHash(password);
 
       pool.query('INSERT INTO company (cnpj, name, email, password) VALUES ($1, $2, $3, $4) RETURNING id, password',
         [cnpj, name, email, hash], (err) => {

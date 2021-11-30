@@ -38,22 +38,22 @@
                 <input type="password" name="password" id="password" class="form-control" placeholder="**********">
               </div>
               <div class="form-group mb-4">
-                <label for="repeat_password">Repetir senha</label>
-                <input type="password" name="repeat_password" id="repeat_password" class="form-control" placeholder="**********">
+                <label for="confirm_password">Repetir senha</label>
+                <input type="password" name="confirm_password" id="confirm_password" class="form-control" placeholder="**********">
               </div>
               <input name="login" id="login" class="btn btn-block login-btn" type="submit" value="Registrar">
             </form>
-            <p class="login-wrapper-footer-text">Empresa já registrada? <a href="/" class="text-reset">Clique aqui</a></p>
+            <p class="login-wrapper-footer-text mb-5">Empresa já registrada? <a href="/" class="text-reset">Clique aqui</a></p>
+            <% if (typeof errors != 'undefined') { %>
+              <div class="alert alert-danger" role="alert">
+                <ul>
+                  <% errors.forEach((error) => { %>
+                    <li><%= error.message %></li>
+                  <% }) %>
+                </ul>
+              </div>
+            <% } %> 
           </div>
-          <% if (typeof errors != 'undefined') { %>
-            <div class="alert alert-danger" role="alert">
-              <ul>
-                <% errors.forEach((error) => { %>
-                  <li><%= error.message %></li>
-                <% }) %>
-              </ul>
-            </div>
-          <% } %> 
         </div>
       </div>
     </div>

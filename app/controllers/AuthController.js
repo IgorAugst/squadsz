@@ -12,7 +12,7 @@ class AuthController {
 
   static async createCompany(req, res) {
     const {
-      name, email, cnpj, password, repeat_password: repeatPassword,
+      name, email, cnpj, password, confirm_password: confirmPassword,
     } = req.body;
 
     const errors = await Company.create({
@@ -20,7 +20,7 @@ class AuthController {
       email,
       cnpj,
       password,
-      repeatPassword,
+      confirmPassword,
     });
 
     if (errors.length === 0) {

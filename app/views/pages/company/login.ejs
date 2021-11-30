@@ -33,18 +33,18 @@
             </form>
             <p class="login-wrapper-footer-text">Você é um funcionário? <a href="/funcionario/entrar" class="text-reset">Clique aqui</a></p>
             <div class="login-separator">ou</div>
-            <p class="login-wrapper-footer-text">Sua empresa não está registrada? <a href="/empresa/registrar" class="text-reset">Clique aqui</a></p>
+            <p class="login-wrapper-footer-text mb-5">Sua empresa não está registrada? <a href="/empresa/registrar" class="text-reset">Clique aqui</a></p>
+            <% if (messages.success_msg) { %> 
+              <div class="alert alert-success">
+                <%= messages.success_msg %>
+              </div>
+            <% } %>
+            <% if (messages.error) { %> 
+              <div class="alert alert-danger">
+                <%= messages.error %>
+              </div>
+            <% } %>
           </div>
-          <% if (messages.success_msg) { %> 
-            <div class="alert alert-success">
-              <%= messages.success_msg %>
-            </div>
-          <% } %>
-          <% if (messages.error) { %> 
-            <div class="alert alert-danger">
-              <%= messages.error %>
-            </div>
-          <% } %>
         </div>
       </div>
     </div>

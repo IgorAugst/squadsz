@@ -6,9 +6,13 @@ const passport = require('passport');
 const { NODE_PORT } = require('../config/base');
 const routes = require('./routes');
 
-const initializePassport = require('./auth');
+const Auth = require('./auth');
 
-initializePassport(passport);
+const EmployeeAuth = new Auth('employee');
+const CompanyAuth = new Auth('company');
+
+EmployeeAuth.initialize(passport);
+CompanyAuth.initialize(passport);
 
 dotenv.config();
 

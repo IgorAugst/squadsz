@@ -31,7 +31,12 @@
               </div>
               <input name="login" id="login" class="btn btn-block login-btn" type="submit" value="Entrar">
             </form>
-            <p class="login-wrapper-footer-text">Deseja entrar como empresa? <a href="/empresa/entrar" class="text-reset">Clique aqui</a></p>
+            <p class="login-wrapper-footer-text mb-5">Deseja entrar como empresa? <a href="/empresa/entrar" class="text-reset">Clique aqui</a></p>
+            <% if (messages.error) { %> 
+              <div class="alert alert-danger">
+                <%= messages.error %>
+              </div>
+            <% } %>
           </div>
         </div>
       </div>

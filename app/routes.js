@@ -38,9 +38,15 @@ routes.get('/funcionario/entrar', EmployeeController.renderLogin);
 
 routes.post('/empresa/registrar', AuthController.createCompany);
 
-routes.post('/empresa/entrar', passport.authenticate('local', {
+routes.post('/empresa/entrar', passport.authenticate('local-company', {
   successRedirect: '/empresa',
-  failureRedirect: '/',
+  failureRedirect: '/empresa/entrar',
+  failureFlash: true,
+}));
+
+routes.post('/funcionario/entrar', passport.authenticate('local-employee', {
+  successRedirect: '/funcionario',
+  failureRedirect: '/funcionario/entrar',
   failureFlash: true,
 }));
 

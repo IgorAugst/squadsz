@@ -33,7 +33,7 @@ CREATE TABLE employee
 CREATE TABLE squad
 (
     id                 int GENERATED ALWAYS AS IDENTITY,
-    created_at TIMESTAMP NOT NULL DEFAULT NOW(),k
+    created_at TIMESTAMP NOT NULL DEFAULT NOW(),
     id_manager_employee   int,
     id_company          int NOT NULL,
     name                     varchar(50),

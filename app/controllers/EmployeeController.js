@@ -1,4 +1,4 @@
-const bcrypt = require('bcrypt');
+const { generateHash } = require('../utils');
 const {
   Company, Employee, Squad,
 } = require('../models');
@@ -128,16 +128,16 @@ class EmployeeController {
       office,
       social_name: socialName,
       password,
-      repeat_password: repeatPassword,
+      confirm_password: confirmPassword,
     } = req.body;
     const { id: idCompany } = req.user;
 
     const errors = [];
 
-    if (!name || !birthDate || !email || !gender || !office || !password || !repeatPassword) {
+    if (!name || !birthDate || !email || !gender || !office || !password || !confirmPassword) {
       errors.push({ message: 'Preencha todos os campos obrigatórios' });
     } else {
-      if (password !== repeatPassword) {
+      if (password !== confirmPassword) {
         errors.push({ message: 'As senhas não são iguais' });
       }
 
@@ -153,8 +153,7 @@ class EmployeeController {
 
       if (errors.length === 0) {
         try {
-          const salt = bcrypt.genSaltSync(10);
-          const hash = bcrypt.hashSync(password, salt);
+          const hash = generateHash(password);
 
           const { id } = await Employee.create({
             name,
