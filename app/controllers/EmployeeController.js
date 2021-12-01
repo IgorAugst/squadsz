@@ -56,16 +56,18 @@ class EmployeeController {
       return res.redirect('/');
     }
 
-    if(req.user.type==1){
-      req.flash('error_msg', 'operação não permitida');
-      return res.redirect('/empresa/funcionarios/editar');
-    }
-
     const { id: idEmployee } = req.params;
     const { id: idCompany } = req.user;
     const {
       name, email, gender, office, social_name: socialName, squad,
     } = req.body;
+
+    if(req.user.type==1){
+      req.flash('error_msg', 'operação não permitida');
+      return res.redirect(`/empresa/funcionarios/${idEmployee}`);
+    }
+
+
 
     const errors = [];
 
