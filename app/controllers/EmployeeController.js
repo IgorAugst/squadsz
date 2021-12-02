@@ -9,7 +9,10 @@ class EmployeeController {
       return res.redirect('/empresa/entrar');
     }
 
-    const { id } = req.user;
+    var id = req.user.id;
+    if(req.user.type!=0){
+      id = req.user.id_company;
+    }
 
     const squads = await Squad.findAll({ where: { id_company: id } });
     const employees = await Employee.findAll({ where: { id_company: id } });
@@ -36,6 +39,10 @@ class EmployeeController {
   static async updateView(req, res) {
     if (!req.isAuthenticated()) {
       return res.redirect('/empresa/entrar');
+    }
+
+    if(req.user.type!=0){
+      return res.redirect('/empresa/funcionarios');
     }
 
     const { id: idCompany } = req.user;
@@ -117,6 +124,10 @@ class EmployeeController {
       return res.redirect('/empresa/entrar');
     }
 
+    if(req.user.type!=0){
+      return res.redirect('/empresa/funcionarios');
+    }
+
     const squads = await Squad.findAll({ where: { id_company: req.user.id } });
 
     return res.render('company/employees-create', {
@@ -180,7 +191,7 @@ class EmployeeController {
           });
 
           req.flash('success_msg', 'Funcionário criado com sucesso');
-          return res.redirect(`/empresa/funcionarios/${id}`);
+          return res.redirect(`/empresa/funcionarios`);
         } catch (error) {
           req.flash('error_msg', 'Erro ao criar funcionario');
           return res.redirect('/empresa/funcionarios/registrar');

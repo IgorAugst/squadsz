@@ -73,6 +73,10 @@ class ProjectController {
       return res.redirect('/empresa/entrar');
     }
 
+    if(req.user.type!=0){
+      return res.redirect('/empresa/projetos')
+    }
+
     const { id: idCompany } = req.user;
 
     const squads = await Squad.findAll({ where: { id_company: idCompany } });
@@ -136,6 +140,10 @@ class ProjectController {
   static async updateView(req, res) {
     if (!req.isAuthenticated()) {
       return res.redirect('/empresa/entrar');
+    }
+
+    if(req.user.type!=0){
+      return res.redirect('/empresa/projetos')
     }
 
     const { id: projectId } = req.params;

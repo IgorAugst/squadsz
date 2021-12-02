@@ -19,7 +19,6 @@ class CompanyController {
     if (!req.isAuthenticated()) {
       return res.redirect('/empresa/entrar');
     }
-    console.log(req.user);
     return res.render('company/dashboard', {
       ...Company.getCompanyProps(req, res),
     });

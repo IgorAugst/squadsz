@@ -37,7 +37,7 @@ routes.post('/empresa/projetos/:id', ProjectController.update);
 routes.get('/funcionario/entrar', EmployeeController.renderLogin);
 
 routes.post('/empresa/registrar', AuthController.createCompany);
-//routes.get('/funcionario', EmployeeController.index);
+routes.get('/funcionario', EmployeeController.index);
 
 routes.post('/empresa/entrar', passport.authenticate('local-company', {
   successRedirect: '/empresa',
