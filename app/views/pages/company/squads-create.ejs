@@ -29,7 +29,7 @@
             <div class="col">
               <label for="manager">Líder do projeto</label>
               <select type="text" class="form-control" name="manager" id="manager">
-                <option value="">Nenhum</option>
+                <option value=""></option>
                 <% employees.forEach(({ id, name }) => { %>
                   <option value="<%- id %>"><%- name %></option>
                 <% }) %> 

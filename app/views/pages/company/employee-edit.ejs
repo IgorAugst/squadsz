@@ -62,7 +62,7 @@
             <div class="col">
               <label for="squad">Squad</label>
               <select type="text" name="squad" class="form-control" id="squad">
-                <option value="">Nenhum</option>
+                <option value=""></option>
                 <% squads.forEach(squad => { %>
                   <option value="<%- squad.id %>"
                     <% if (squad.id === employee.id_squad) { %>
@@ -81,9 +81,31 @@
             <button type="submit" class="btn btn-primary w-25 text-white py-2">Editar</button>
           </div>
         </form>
-      </div>
+        <button type="button" id="delete-button" class="mt-2 btn btn-danger w-25 text-white py-2">Excluir</button>
+        <div class="modal" id="delete-modal" tabindex="-1">
+          <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title">Excluir Funcionário</h5>
+                <button type="button" id="btn-close" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+              </div>
+              <div class="modal-body">
+                <p>Quer mesmo excluir esse Funcionário? Essa ação não poderá ser desfeita.</p>
+              </div>
+              <div class="modal-footer">
+                <button type="button" id="btn-cancel" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <form 
+                method="POST" 
+                action="/empresa/funcionarios/deletar/<%= employee.id %>" 
+                id="delete-employee">
+                  <button type="submit" class="btn btn-danger">Excluir</button>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
       <% if (typeof errors != 'undefined') { %>
-        <div class="alert alert-danger m-5" role="alert">
+        <div class="alert alert-danger mt-5" role="alert">
           <ul>
             <% errors.forEach((error) => { %>
               <li><%= error.message %></li>
@@ -92,16 +114,17 @@
         </div>
       <% } %> 
       <% if (messages.success_msg) { %> 
-        <div class="alert alert-success m-5">
+        <div class="alert alert-success mt-5">
           <%= messages.success_msg %>
         </div>
       <% } %>
       <% if (messages.error_msg) { %> 
-        <div class="alert alert-danger m-5">
+        <div class="alert alert-danger mt-5">
           <%= messages.error_msg %>
         </div>
       <% } %>
     </div>
   </div>
+  <script src="/public/scripts/modalDelete.js"></script>
 </body>
 </html>

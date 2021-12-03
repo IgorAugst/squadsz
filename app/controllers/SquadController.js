@@ -169,6 +169,24 @@ class SquadController {
       ...Company.getCompanyProps(req),
     });
   }
+
+  static async delete(req, res) {
+    if (!req.isAuthenticated()) {
+      return res.redirect('/');
+    }
+
+    const { id: idSquad } = req.params;
+
+    try {
+      await Squad.delete(idSquad);
+
+      req.flash('success_msg', 'Squad deletado com sucesso');
+      return res.redirect('/empresa/squads');
+    } catch (error) {
+      req.flash('error_msg', 'Erro ao deletar squad');
+      return res.redirect(`/empresa/squads/${idSquad}`);
+    }
+  }
 }
 
 module.exports = SquadController;

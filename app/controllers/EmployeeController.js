@@ -184,6 +184,24 @@ class EmployeeController {
       ...Company.getCompanyProps(req),
     });
   }
+
+  static async delete(req, res) {
+    if (!req.isAuthenticated()) {
+      return res.redirect('/');
+    }
+
+    const { id: idEmployee } = req.params;
+
+    try {
+      await Employee.delete(idEmployee);
+
+      req.flash('success_msg', 'Funcionário deletado com sucesso');
+      return res.redirect('/empresa/funcionarios');
+    } catch (error) {
+      req.flash('error_msg', 'Erro ao deletar funcionário');
+      return res.redirect(`/empresa/funcionarios/${idEmployee}`);
+    }
+  }
 }
 
 module.exports = EmployeeController;

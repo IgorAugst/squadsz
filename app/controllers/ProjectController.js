@@ -88,7 +88,7 @@ class ProjectController {
       return res.redirect('/');
     }
 
-    const { id: projectId } = req.params;
+    const { id: idProject } = req.params;
     const { id: idCompany } = req.user;
     const {
       name, description, squad, status,
@@ -100,13 +100,13 @@ class ProjectController {
       errors.push({ message: 'Preencha todos os campos obrigatórios' });
     } else {
       const project = await Project.findOne({ where: { name, id_company: idCompany } });
-      if (project && project.id !== Number(projectId)) {
+      if (project && project.id !== Number(idProject)) {
         errors.push({ message: 'Este projeto já existe' });
       }
 
       if (errors.length === 0) {
         try {
-          await Project.update(projectId, {
+          await Project.update(idProject, {
             name,
             description,
             id_squad: squad === '' ? null : squad,
@@ -114,15 +114,15 @@ class ProjectController {
           });
 
           req.flash('success_msg', 'Projeto atualizado com sucesso');
-          return res.redirect(`/empresa/projetos/${projectId}`);
+          return res.redirect(`/empresa/projetos/${idProject}`);
         } catch (error) {
           req.flash('error_msg', 'Erro ao atualizar projeto');
-          return res.redirect(`/empresa/projetos/${projectId}`);
+          return res.redirect(`/empresa/projetos/${idProject}`);
         }
       }
     }
 
-    const project = await Project.find(projectId);
+    const project = await Project.find(idProject);
     const squads = await Squad.findAll({ where: { id_company: idCompany } });
 
     return res.render('company/projects-edit', {
@@ -138,10 +138,10 @@ class ProjectController {
       return res.redirect('/empresa/entrar');
     }
 
-    const { id: projectId } = req.params;
+    const { id: idProject } = req.params;
     const { id: idCompany } = req.user;
 
-    const project = await Project.find(projectId);
+    const project = await Project.find(idProject);
     const squads = await Squad.findAll({ where: { id_company: idCompany } });
 
     return res.render('company/projects-edit', {
@@ -149,6 +149,24 @@ class ProjectController {
       squads,
       ...Company.getCompanyProps(req, res),
     });
+  }
+
+  static async delete(req, res) {
+    if (!req.isAuthenticated()) {
+      return res.redirect('/');
+    }
+
+    const { id: idProject } = req.params;
+
+    try {
+      await Project.delete(idProject);
+
+      req.flash('success_msg', 'Projeto deletado com sucesso');
+      return res.redirect('/empresa/projetos');
+    } catch (error) {
+      req.flash('error_msg', 'Erro ao deletar projeto');
+      return res.redirect(`/empresa/projetos/${idProject}`);
+    }
   }
 }
 

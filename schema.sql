@@ -27,7 +27,7 @@ CREATE TABLE employee
     gender           sexo        NOT NULL,
     password          varchar(256)   NOT NULL,
     PRIMARY KEY (id),
-    FOREIGN KEY (id_company) REFERENCES company (id)
+    FOREIGN KEY (id_company) REFERENCES company (id) ON DELETE CASCADE
 );
 
 CREATE TABLE squad
@@ -38,13 +38,13 @@ CREATE TABLE squad
     id_company          int NOT NULL,
     name                     varchar(50),
     PRIMARY KEY (id),
-    FOREIGN KEY (id_manager_employee) REFERENCES employee (id),
-    FOREIGN KEY (id_company) REFERENCES company (id)
+    FOREIGN KEY (id_manager_employee) REFERENCES employee (id) ON DELETE SET NULL,
+    FOREIGN KEY (id_company) REFERENCES company (id) ON DELETE CASCADE
 );
 
 ALTER  TABLE employee
 add id_squad int,
-ADD FOREIGN KEY (id_squad) REFERENCES squad(id);
+ADD FOREIGN KEY (id_squad) REFERENCES squad(id) ON DELETE SET NULL;
 
 CREATE TYPE status AS ENUM('feito', 'para fazer', 'em progresso');
 
@@ -58,44 +58,44 @@ CREATE TABLE project(
     description TEXT,
     finished_at date,
     PRIMARY KEY (id),
-    FOREIGN KEY (id_squad) REFERENCES squad(id),
-    FOREIGN KEY (id_company) REFERENCES company(id)
+    FOREIGN KEY (id_squad) REFERENCES squad(id) ON DELETE SET NULL,
+    FOREIGN KEY (id_company) REFERENCES company(id) ON DELETE CASCADE
 );
 
 CREATE TABLE sprint(
     id int GENERATED ALWAYS AS IDENTITY ,
     created_at TIMESTAMP NOT NULL DEFAULT NOW(),
-    id_squad int,
+    id_squad int NOT NULL,
     goal varchar(1000),
     finished_at date,
     PRIMARY KEY (id),
-    FOREIGN KEY (id_squad) REFERENCES squad(id)
+    FOREIGN KEY (id_squad) REFERENCES squad(id) ON DELETE CASCADE
 );
 
 CREATE TABLE task(
     id int GENERATED ALWAYS AS IDENTITY,
     created_at TIMESTAMP NOT NULL DEFAULT NOW(),
-    id_sprint int,
-    id_project int,
+    id_sprint int NOT NULL,
+    id_project int NOT NULL,
     id_employee int,
     name varchar(50) NOT NULL ,
     description TEXT,
     points int,
     status status,
     PRIMARY KEY (id),
-    FOREIGN KEY (id_sprint) REFERENCES sprint(id),
-    FOREIGN KEY (id_project) REFERENCES project(id),
+    FOREIGN KEY (id_sprint) REFERENCES sprint(id) ON DELETE CASCADE,
+    FOREIGN KEY (id_project) REFERENCES project(id) ON DELETE CASCADE,
     FOREIGN KEY (id_employee) REFERENCES employee(id)
 );
 
 CREATE TABLE note(
     id int GENERATED ALWAYS AS IDENTITY,
     created_at TIMESTAMP NOT NULL DEFAULT NOW(),
-    id_task int,
-    id_employee int,
+    id_task int NOT NULL,
+    id_employee int NOT NULL,
     attachment varchar(256),
     comment TEXT,
     PRIMARY KEY (id),
-    FOREIGN KEY (id_task) REFERENCES task(id),
-    FOREIGN KEY (id_employee) REFERENCES employee(id)
+    FOREIGN KEY (id_task) REFERENCES task(id) ON DELETE CASCADE,
+    FOREIGN KEY (id_employee) REFERENCES employee(id) ON DELETE CASCADE
 );
