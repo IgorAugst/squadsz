@@ -13,17 +13,18 @@
 }
 #profile-nav .nav-item .profile-icon {
   width: 24px;
+  margin-left: 16px;
 }
 #profile-nav .nav-item i {
-  margin-left: 16px;
   color: var(--bs-primary);
   font-size: 24px;
 }
-#profile-nav .dropdown-menu {
-  right: 0;
-  top: 30px;
+
+#dropdown {
+  right: 30px;
+  top: 0px;
 }
-#profile-nav .dropdown-menu i {
+#dropdown i {
   color: var(--bs-primary);
   font-size: 18px;
   margin-right: 12px;

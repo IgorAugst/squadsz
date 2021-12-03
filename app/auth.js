@@ -17,6 +17,7 @@ class Auth {
 
       }, (email, password, done) => {
         try {
+          console.log("entrando como: " + this.table);
           pool.query(`SELECT * FROM ${this.table} WHERE email = $1`, [email], async (err, results) => {
             if (err) {
               throw err;
@@ -29,6 +30,7 @@ class Auth {
             const isMatchPassword = await comparePassword(password, user.password);
 
             if (isMatchPassword) {
+              console.log(user);
               return done(null, user);
             }
             return done(null, false, { message: 'Senha incorreta' });

@@ -36,6 +36,10 @@ class SquadController {
       return res.redirect('/');
     }
 
+    if (req.user.type !== 0) {
+      return res.redirect('/empresa/squads');
+    }
+
     const { id: idSquad } = req.params;
     const { id: idCompany } = req.user;
 
@@ -108,6 +112,10 @@ class SquadController {
   static async createView(req, res) {
     if (!req.isAuthenticated()) {
       return res.redirect('/');
+    }
+
+    if (req.user.type !== 0) {
+      return res.redirect('/empresa/squads');
     }
 
     const { id: idCompany } = req.user;

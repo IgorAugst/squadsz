@@ -9,7 +9,10 @@ class EmployeeController {
       return res.redirect('/empresa/entrar');
     }
 
-    const { id } = req.user;
+    let { id } = req.user;
+    if (req.user.type !== 0) {
+      id = req.user.id_company;
+    }
 
     const squads = await Squad.findAll({ where: { id_company: id } });
     const employees = await Employee.findAll({ where: { id_company: id } });
@@ -38,6 +41,10 @@ class EmployeeController {
       return res.redirect('/empresa/entrar');
     }
 
+    if (req.user.type !== 0) {
+      return res.redirect('/empresa/funcionarios');
+    }
+
     const { id: idCompany } = req.user;
     const { id: idEmployee } = req.params;
 
@@ -61,6 +68,11 @@ class EmployeeController {
     const {
       name, email, gender, office, social_name: socialName, squad,
     } = req.body;
+
+    if (req.user.type === 1) {
+      req.flash('error_msg', 'operação não permitida');
+      return res.redirect(`/empresa/funcionarios/${idEmployee}`);
+    }
 
     const errors = [];
 
@@ -110,6 +122,10 @@ class EmployeeController {
       return res.redirect('/empresa/entrar');
     }
 
+    if (req.user.type !== 0) {
+      return res.redirect('/empresa/funcionarios');
+    }
+
     const squads = await Squad.findAll({ where: { id_company: req.user.id } });
 
     return res.render('company/employees-create', {
@@ -131,6 +147,11 @@ class EmployeeController {
       confirm_password: confirmPassword,
     } = req.body;
     const { id: idCompany } = req.user;
+
+    if (req.user.type === 1) {
+      req.flash('error_msg', 'Operação não permitida');
+      return res.redirect('/empresa/funcionarios/registrar');
+    }
 
     const errors = [];
 
@@ -155,7 +176,7 @@ class EmployeeController {
         try {
           const hash = generateHash(password);
 
-          const { id } = await Employee.create({
+          await Employee.create({
             name,
             birth_date: birthDate,
             id_company: idCompany,
@@ -168,7 +189,7 @@ class EmployeeController {
           });
 
           req.flash('success_msg', 'Funcionário criado com sucesso');
-          return res.redirect(`/empresa/funcionarios/${id}`);
+          return res.redirect('/empresa/funcionarios');
         } catch (error) {
           req.flash('error_msg', 'Erro ao criar funcionario');
           return res.redirect('/empresa/funcionarios/registrar');

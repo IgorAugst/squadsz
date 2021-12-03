@@ -40,6 +40,8 @@ routes.post('/empresa/projetos/deletar/:id', ProjectController.delete);
 
 routes.get('/funcionario/entrar', EmployeeController.renderLogin);
 
+routes.get('/funcionario', EmployeeController.index);
+
 routes.post('/empresa/entrar', passport.authenticate('local-company', {
   successRedirect: '/empresa',
   failureRedirect: '/empresa/entrar',

@@ -73,6 +73,10 @@ class ProjectController {
       return res.redirect('/empresa/entrar');
     }
 
+    if (req.user.type !== 0) {
+      return res.redirect('/empresa/projetos');
+    }
+
     const { id: idCompany } = req.user;
 
     const squads = await Squad.findAll({ where: { id_company: idCompany } });
@@ -139,6 +143,10 @@ class ProjectController {
     }
 
     const { id: idProject } = req.params;
+    if (req.user.type !== 0) {
+      return res.redirect('/empresa/projetos');
+    }
+
     const { id: idCompany } = req.user;
 
     const project = await Project.find(idProject);
