@@ -18,7 +18,8 @@
   },
   "scripts": {
     "start": "node app/server.js",
-    "dev": "nodemon --exec npm start"
+    "dev": "nodemon --exec npm start",
+    "sass": "gulp watch"
   },
   "dependencies": {
     "bcrypt": "^5.0.1",

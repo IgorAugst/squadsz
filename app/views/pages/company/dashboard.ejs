@@ -18,7 +18,27 @@
     <%- include('../../partials/side-bar.ejs') %> 
     <div id="content">
       <%- include('../../partials/header.ejs') %> 
+      <% if (typeof errors != 'undefined') { %>
+        <div class="alert alert-danger m-5" role="alert">
+          <ul>
+            <% errors.forEach((error) => { %>
+              <li><%= error.message %></li>
+            <% }) %>
+          </ul>
+        </div>
+      <% } %> 
+      <% if (messages.error_msg) { %> 
+        <div class="alert alert-danger m-5">
+          <%= messages.error_msg %>
+        </div>
+      <% } %>
+      <% if (messages.success_msg) { %> 
+        <div class="alert alert-success m-5">
+          <%= messages.success_msg %>
+        </div>
+      <% } %>
     </div>
   </div>
+  <script src="/public/scripts/dropdown.js"></script>
 </body>
 </html>

@@ -1,9 +1,33 @@
 #profile-nav {
+  cursor: pointer;
   padding-right: 24px;
   height: 64px;
-  i {
-    margin-left: 16px;
+  position: relative;
+  transition: 0.2s;
+
+  &:hover {
     color: var(--bs-primary);
-    font-size: 24px;
+  }
+  &.active {
+    color: var(--bs-primary);
+  }
+  .nav-item {
+    .profile-icon {
+      width: 24px;
+    }
+    i {
+      margin-left: 16px;
+      color: var(--bs-primary);
+      font-size: 24px;
+    }
+  }
+  .dropdown-menu {
+    right: 0;
+    top: 30px;
+    i {
+      color: var(--bs-primary);
+      font-size: 18px;
+      margin-right: 12px;
+    }
   }
 }

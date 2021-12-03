@@ -15,6 +15,7 @@
     font-size: 20px;
     line-height: 48px;
     text-align: center;
+    filter: brightness(0.8);
     p {
       color: #fff;
       text-decoration: none;
@@ -31,11 +32,14 @@
       padding: 16px 24px;
       border-bottom: 1px solid #ECEFF1;
       a {
+        display: flex;
         text-decoration: none;
         background: none;
         color: #CFD8DC;
         font-size: 16px;
-        i {
+        .icon-wrapper {
+          width: 16px;
+          height: 14px;
           margin-right: 16px;
         }
         &:hover{

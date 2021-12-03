@@ -6,15 +6,16 @@ const routes = express.Router();
 const {
   CompanyController,
   EmployeeController,
-  AuthController,
   SquadController,
   ProjectController,
 } = require('./controllers');
 
 routes.get('/', CompanyController.login);
-routes.get('/empresa', CompanyController.dashboard);
+routes.get('/empresa', CompanyController.index);
 routes.get('/empresa/entrar', CompanyController.login);
-routes.get('/empresa/registrar', CompanyController.create);
+routes.get('/empresa/registrar', CompanyController.createView);
+routes.post('/empresa/registrar', CompanyController.create);
+routes.post('/empresa/editar', CompanyController.update);
 
 routes.get('/empresa/squads', SquadController.index);
 routes.post('/empresa/squads/registrar', SquadController.create);
@@ -39,8 +40,6 @@ routes.post('/empresa/projetos/deletar/:id', ProjectController.delete);
 
 routes.get('/funcionario/entrar', EmployeeController.renderLogin);
 
-routes.post('/empresa/registrar', AuthController.createCompany);
-
 routes.post('/empresa/entrar', passport.authenticate('local-company', {
   successRedirect: '/empresa',
   failureRedirect: '/empresa/entrar',
@@ -52,5 +51,10 @@ routes.post('/funcionario/entrar', passport.authenticate('local-employee', {
   failureRedirect: '/funcionario/entrar',
   failureFlash: true,
 }));
+
+routes.get('/logout', (req, res) => {
+  req.logout();
+  res.redirect('/');
+});
 
 module.exports = routes;

@@ -16,6 +16,7 @@
   font-size: 20px;
   line-height: 48px;
   text-align: center;
+  filter: brightness(0.8);
 }
 #sidebar header p {
   color: #fff;
@@ -34,12 +35,15 @@
   border-bottom: 1px solid #ECEFF1;
 }
 #sidebar .nav li a {
+  display: flex;
   text-decoration: none;
   background: none;
   color: #CFD8DC;
   font-size: 16px;
 }
-#sidebar .nav li a i {
+#sidebar .nav li a .icon-wrapper {
+  width: 16px;
+  height: 14px;
   margin-right: 16px;
 }
 #sidebar .nav li a:hover {

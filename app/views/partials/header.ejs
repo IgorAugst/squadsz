@@ -1,4 +1,45 @@
 <ul id="profile-nav" class="nav navbar bg-light justify-content-end mr-4">
   <li class="nav-item"><%- profile.name %> </li>
-  <li class="nav-item"><i class="fas fa-user-circle"></i></li>
+  <li class="nav-item">
+    <div class="profile-icon">
+      <i class="fas fa-user-circle"></i></li>
+    </div>
+  <div class="dropdown">
+    <div id="dropdown" class="dropdown-menu">
+      <button id="button-config-modal" class="dropdown-item"><i class="fas fa-user-alt"></i>Meu perfil</button>
+      <a class="dropdown-item" href="/logout"><i class="fas fa-sign-out-alt"></i>Logout</a>
+    </div>
+  </div>
 </ul>
+<div class="modal" id="profile-modal" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <% if (company) { %>
+        <div class="modal-header">
+          <h5 class="modal-title">Meu perfil</h5>
+          <button type="button" id="btn-close-config-modal" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+        </div>
+        <div class="modal-body">
+          <form method="post" action="/empresa/editar">
+            <div class="m-3">
+              <label for="input-name">Nome</label>
+              <input type="text" class="form-control" id="input-name" name="name" value="<%- profile.name %>">
+            </div>
+            <div class="m-3">
+              <label for="input-email">E-mail</label>
+              <input type="email" class="form-control" id="input-email" name="email" value="<%- profile.email %>">
+            </div>
+            <div class="m-3">
+              <label for="input-cnpj">CNPJ</label>
+              <input type="text" class="form-control" id="input-cnpj" name="cnpj" value="<%- profile.cnpj %>">
+            </div>
+            <div class="modal-footer">
+              <button type="button" id="btn-cancel-config-modal" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+              <button type="submit" class="btn btn-primary">Editar</button>
+            </div>
+          </form>
+        </div>
+      <% } %>
+    </div>
+  </div>
+</div>
