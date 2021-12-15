@@ -1,6 +1,5 @@
 const dotenv = require('dotenv');
 const express = require('express');
-const session = require('express-session');
 const cors = require('cors');
 const { NODE_PORT } = require('./config/base');
 const routes = require('./routes');
@@ -17,13 +16,6 @@ app.use(
   })
 );
 app.use(express.json());
-app.use(
-  session({
-    secret: 'secret',
-    resave: false,
-    saveUninitialized: false,
-  })
-);
 
 app.use(routes);
 
