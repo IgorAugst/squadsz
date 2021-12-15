@@ -1,4 +1,4 @@
-<h1 align="center">SquadsZ</h1>
+<h1 align="center">SquadsZ - Server</h1>
 
 <p align="center">
      <img src=https://img.shields.io/github/languages/code-size/IgorSantoss/squadsz?style=for-the-badge hspace="2" vspace="20"/>
@@ -10,17 +10,7 @@
 
 ## About
 
-🚧 In Progress 🚧
-
-<!-- DEMO -->
-
-## 🎥 Demo
-
-🚧 In Progress 🚧
-
-## ✅ Features
-
-🚧 In Progress 🚧
+Project that provides the API to be used in [squadsz client](https://github.com/vitormrts/squadsz-client)
 
 <!-- TECHONOLOGIES -->
 
@@ -67,7 +57,8 @@ $ make up
 
 Done! Now you have this application in your computer.
 
-### Commands
+### Commands Info
+
 ```sh
 # Install dependencies
 $ make install
@@ -111,7 +102,7 @@ To contributing to this project, follow the steps bellow.
 
 ## 📝 License
 
-This project is under the MIT license. See the [LICENSE](https://github.com/vitormrts/nextdex/blob/master/LICENSE) file for more details.
+This project is under the MIT license. See the [LICENSE](https://github.com/IgorSantoss/squadsz/blob/master/LICENSE) file for more details.
 
 ---
 
