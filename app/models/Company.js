@@ -1,10 +1,5 @@
-class Company {
-  static getCompanyProps(req, res) {
-    return {
-      profile: req.user,
-      company: true,
-    };
-  }
-}
+const ORM = require('../orm');
+
+const Company = new ORM('company');
 
 module.exports = Company;

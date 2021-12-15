@@ -1,21 +1,14 @@
+const { compareSync } = require('bcrypt');
+const jwt = require('jsonwebtoken');
 const { generateHash } = require('../utils');
-const {
-  Company, Employee, Squad,
-} = require('../models');
+const { Employee, Squad } = require('../models');
 
 class EmployeeController {
   static async index(req, res) {
-    if (!req.isAuthenticated()) {
-      return res.redirect('/empresa/entrar');
-    }
+    const { id: idCompany } = req.headers;
 
-    let { id } = req.user;
-    if (req.user.type !== 0) {
-      id = req.user.id_company;
-    }
-
-    const squads = await Squad.findAll({ where: { id_company: id } });
-    const employees = await Employee.findAll({ where: { id_company: id } });
+    const squads = await Squad.findAll({ where: { id_company: idCompany } });
+    const employees = await Employee.findAll({ where: { id_company: idCompany } });
 
     const employeesMap = employees.map((employee) => {
       const { name: squad } = squads.find(
@@ -26,202 +19,132 @@ class EmployeeController {
         squad,
       };
     });
-    return res.render('company/employees', {
-      employees: employeesMap,
-      ...Company.getCompanyProps(req, res),
-    });
-  }
-
-  static renderLogin(req, res) {
-    return res.render('employee/login');
+    return res.status(200).json(employeesMap);
   }
 
   static async updateView(req, res) {
-    if (!req.isAuthenticated()) {
-      return res.redirect('/empresa/entrar');
-    }
-
-    if (req.user.type !== 0) {
-      return res.redirect('/empresa/funcionarios');
-    }
-
-    const { id: idCompany } = req.user;
     const { id: idEmployee } = req.params;
 
-    const employee = await Employee.find(idEmployee);
-    const squads = await Squad.findAll({ where: { id_company: idCompany } });
-
-    return res.render('company/employee-edit', {
-      employee,
-      squads,
-      ...Company.getCompanyProps(req, res),
-    });
+    try {
+      const employee = await Employee.find(idEmployee);
+      return res.status(200).json(employee);
+    } catch (error) {
+      return res.status(400).json({ message: 'Erro ao buscar funcionário' });
+    }
   }
 
   static async update(req, res) {
-    if (!req.isAuthenticated()) {
-      return res.redirect('/');
-    }
-
     const { id: idEmployee } = req.params;
-    const { id: idCompany } = req.user;
+    const { id: idCompany } = req.headers;
     const {
-      name, email, gender, office, social_name: socialName, squad,
+      name,
+      email,
+      gender,
+      office,
+      social_name: socialName,
+      squad,
     } = req.body;
 
-    if (req.user.type === 1) {
-      req.flash('error_msg', 'operação não permitida');
-      return res.redirect(`/empresa/funcionarios/${idEmployee}`);
-    }
-
-    const errors = [];
-
-    if (!name || !email || !gender || !office) {
-      errors.push({ message: 'Preencha todos os campos obrigatórios' });
-    } else {
-      const employee = await Employee.findOne({ where: { email, id_company: idCompany } });
-
-      if (employee && employee.id !== Number(idEmployee)) {
-        errors.push({ message: 'E-mail já cadastrado' });
-      }
-
-      if (errors.length === 0) {
-        try {
-          await Employee.update(idEmployee, {
-            email,
-            gender,
-            id_company: idCompany,
-            name,
-            office,
-            social_name: socialName,
-            id_squad: squad === '' ? null : squad,
-          });
-
-          req.flash('success_msg', 'Funcionario editado com sucesso');
-          return res.redirect(`/empresa/funcionarios/${idEmployee}`);
-        } catch (error) {
-          req.flash('error_msg', 'Erro ao editar funcionario');
-          return res.redirect('/empresa/funcionarios/editar');
-        }
-      }
-    }
-
-    const squads = await Squad.findAll({ where: { id_company: idCompany } });
-    const employee = await Employee.find(idEmployee);
-
-    return res.render('company/employee-edit', {
-      errors,
-      employee,
-      squads,
-      ...Company.getCompanyProps(req),
+    const employee = await Employee.findOne({
+      where: { email, id_company: idCompany },
     });
-  }
 
-  static async createView(req, res) {
-    if (!req.isAuthenticated()) {
-      return res.redirect('/empresa/entrar');
+    if (employee && employee.id !== Number(idEmployee)) {
+      return res.status(400).json({ message: 'E-mail já cadastrado' });
     }
 
-    if (req.user.type !== 0) {
-      return res.redirect('/empresa/funcionarios');
+    try {
+      await Employee.update(idEmployee, {
+        email,
+        gender,
+        id_company: idCompany,
+        name,
+        office,
+        social_name: socialName,
+        id_squad: squad === '' ? null : squad,
+      });
+
+      return res.status(200).json({ message: 'Funcionário atualizado com sucesso' });
+    } catch (error) {
+      return res.status(400).json({ message: 'Erro ao atualizar funcionário' });
     }
-
-    const squads = await Squad.findAll({ where: { id_company: req.user.id } });
-
-    return res.render('company/employees-create', {
-      squads,
-      ...Company.getCompanyProps(req, res),
-    });
   }
 
   static async create(req, res) {
     const {
-      name, birth_date:
-      birthDate,
+      name,
+      birth_date: birthDate,
       squad,
       email,
       gender,
       office,
       social_name: socialName,
       password,
-      confirm_password: confirmPassword,
     } = req.body;
-    const { id: idCompany } = req.user;
+    const { id: idCompany } = req.headers;
 
-    if (req.user.type === 1) {
-      req.flash('error_msg', 'Operação não permitida');
-      return res.redirect('/empresa/funcionarios/registrar');
-    }
-
-    const errors = [];
-
-    if (!name || !birthDate || !email || !gender || !office || !password || !confirmPassword) {
-      errors.push({ message: 'Preencha todos os campos obrigatórios' });
-    } else {
-      if (password !== confirmPassword) {
-        errors.push({ message: 'As senhas não são iguais' });
-      }
-
-      if (password.length < 6) {
-        errors.push({ message: 'A senha deve ter no mínimo 6 caracteres' });
-      }
-
-      const employee = await Employee.findOne({ where: { email, id_company: idCompany } });
-
-      if (employee) {
-        errors.push({ message: 'E-mail já cadastrado' });
-      }
-
-      if (errors.length === 0) {
-        try {
-          const hash = generateHash(password);
-
-          await Employee.create({
-            name,
-            birth_date: birthDate,
-            id_company: idCompany,
-            id_squad: squad === '' ? null : squad,
-            email,
-            gender,
-            office,
-            social_name: socialName,
-            password: hash,
-          });
-
-          req.flash('success_msg', 'Funcionário criado com sucesso');
-          return res.redirect('/empresa/funcionarios');
-        } catch (error) {
-          req.flash('error_msg', 'Erro ao criar funcionario');
-          return res.redirect('/empresa/funcionarios/registrar');
-        }
-      }
-    }
-
-    const squads = await Squad.findAll({ where: { id_company: idCompany } });
-
-    return res.render('company/employees-create', {
-      squads,
-      errors,
-      ...Company.getCompanyProps(req),
+    const employee = await Employee.findOne({
+      where: { email, id_company: idCompany },
     });
+
+    if (employee) {
+      return res.status(400).json({ message: 'E-mail já cadastrado' });
+    }
+
+    try {
+      const hash = generateHash(password);
+
+      await Employee.create({
+        name,
+        birth_date: birthDate,
+        id_company: idCompany,
+        id_squad: squad === '' ? null : squad,
+        email,
+        gender,
+        office,
+        social_name: socialName,
+        password: hash,
+      });
+
+      return res.status(200).send({ message: 'Funcionário criado com sucesso' });
+    } catch (error) {
+      return res.status(400).send({ message: 'Erro ao criar o funcionário' });
+    }
   }
 
   static async delete(req, res) {
-    if (!req.isAuthenticated()) {
-      return res.redirect('/');
-    }
-
     const { id: idEmployee } = req.params;
 
     try {
       await Employee.delete(idEmployee);
-
-      req.flash('success_msg', 'Funcionário deletado com sucesso');
-      return res.redirect('/empresa/funcionarios');
+      return res.status(200).json({ message: 'Funcionário deletado com sucesso' });
     } catch (error) {
-      req.flash('error_msg', 'Erro ao deletar funcionário');
-      return res.redirect(`/empresa/funcionarios/${idEmployee}`);
+      return res.status(400).json({ message: 'Erro ao deletar funcionário' });
     }
+  }
+
+  static async login(req, res) {
+    const { email, password } = req.body;
+    const user = await Employee.findOne({ where: { email } });
+
+    if (!user) {
+      return res.status(403).json({ message: 'Usuário e/ou senha incorretos' });
+    }
+
+    const isMatch = compareSync(password, user.password);
+
+    if (isMatch) {
+      const { password: userPassword, ...rest } = user;
+      const userInfo = { ...rest };
+
+      return res.status(200).json({
+        message: 'Autenticado com sucesso',
+        user,
+        token: jwt.sign(userInfo, 'secret'),
+      });
+    }
+
+    return res.status(403).json({ message: 'Usuário e/ou senha incorretos' });
   }
 }
 

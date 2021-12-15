@@ -1,5 +1,4 @@
 const express = require('express');
-const passport = require('passport');
 
 const routes = express.Router();
 
@@ -8,55 +7,37 @@ const {
   EmployeeController,
   SquadController,
   ProjectController,
+  TaskController,
 } = require('./controllers');
+const SprintController = require('./controllers/SprintController');
+const { CompanyMiddleware, AuthMiddleware } = require('./middlewares');
 
-routes.get('/', CompanyController.login);
-routes.get('/empresa', CompanyController.index);
-routes.get('/empresa/entrar', CompanyController.login);
-routes.get('/empresa/registrar', CompanyController.createView);
-routes.post('/empresa/registrar', CompanyController.create);
-routes.post('/empresa/editar', CompanyController.update);
-
-routes.get('/empresa/squads', SquadController.index);
-routes.post('/empresa/squads/registrar', SquadController.create);
-routes.get('/empresa/squads/registrar', SquadController.createView);
-routes.get('/empresa/squads/:id', SquadController.updateView);
-routes.post('/empresa/squads/:id', SquadController.update);
-routes.post('/empresa/squads/deletar/:id', SquadController.delete);
-
-routes.get('/empresa/funcionarios', EmployeeController.index);
-routes.get('/empresa/funcionarios/registrar', EmployeeController.createView);
-routes.post('/empresa/funcionarios/registrar', EmployeeController.create);
-routes.get('/empresa/funcionarios/:id', EmployeeController.updateView);
-routes.post('/empresa/funcionarios/:id', EmployeeController.update);
-routes.post('/empresa/funcionarios/deletar/:id', EmployeeController.delete);
-
-routes.get('/empresa/projetos', ProjectController.index);
-routes.get('/empresa/projetos/registrar', ProjectController.createView);
-routes.post('/empresa/projetos/registrar', ProjectController.create);
-routes.get('/empresa/projetos/:id', ProjectController.updateView);
-routes.post('/empresa/projetos/:id', ProjectController.update);
-routes.post('/empresa/projetos/deletar/:id', ProjectController.delete);
-
-routes.get('/funcionario/entrar', EmployeeController.renderLogin);
-
-routes.get('/funcionario', EmployeeController.index);
-
-routes.post('/empresa/entrar', passport.authenticate('local-company', {
-  successRedirect: '/empresa',
-  failureRedirect: '/empresa/entrar',
-  failureFlash: true,
-}));
-
-routes.post('/funcionario/entrar', passport.authenticate('local-employee', {
-  successRedirect: '/funcionario',
-  failureRedirect: '/funcionario/entrar',
-  failureFlash: true,
-}));
-
-routes.get('/logout', (req, res) => {
-  req.logout();
-  res.redirect('/');
-});
+routes.post('/company/create', CompanyController.create);
+routes.put('/company/update', CompanyController.update);
+routes.get('/squads', AuthMiddleware.validate, SquadController.index);
+routes.post('/squads/create', CompanyMiddleware.validate, SquadController.create);
+routes.get('/squad/:id', AuthMiddleware.validate, SquadController.updateView);
+routes.put('/squad/update/:id', CompanyMiddleware.validate, SquadController.update);
+routes.delete('/squad/delete/:id', CompanyMiddleware.validate, SquadController.delete);
+routes.get('/employees', AuthMiddleware.validate, EmployeeController.index);
+routes.post('/employees/create', CompanyMiddleware.validate, EmployeeController.create);
+routes.get('/employee/:id', CompanyMiddleware.validate, EmployeeController.updateView);
+routes.put('/employee/update/:id', AuthMiddleware.validate, EmployeeController.update);
+routes.delete('/employee/delete/:id', EmployeeController.delete);
+routes.get('/employee', EmployeeController.index);
+routes.post('/employee/login', EmployeeController.login);
+routes.get('/projects', AuthMiddleware.validate, ProjectController.index);
+routes.post('/projects/create', CompanyMiddleware.validate, ProjectController.create);
+routes.get('/project/:id', CompanyMiddleware.validate, ProjectController.updateView);
+routes.put('/project/update/:id', CompanyMiddleware.validate, ProjectController.update);
+routes.delete('/project/delete/:id', ProjectController.delete);
+routes.post('/company/login', CompanyController.login);
+routes.get('/sprints', AuthMiddleware.validate, SprintController.index);
+routes.post('/sprints/create', CompanyMiddleware.validate, SprintController.create);
+routes.get('/sprint/:id', AuthMiddleware.validate, SprintController.get);
+routes.delete('/sprint/delete/:id', CompanyMiddleware.validate, SprintController.delete);
+routes.post('/task/create', AuthMiddleware.validate, TaskController.create);
+routes.put('/task/update/:id', AuthMiddleware.validate, TaskController.update);
+routes.delete('/task/delete/:id', AuthMiddleware.validate, TaskController.delete);
 
 module.exports = routes;

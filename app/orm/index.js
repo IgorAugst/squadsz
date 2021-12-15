@@ -101,11 +101,16 @@ class ORM {
     }
   }
 
-  async rightJoin({ related = [], on = [], select = ['*'] }) {
-    const query = `SELECT ${select.join(', ')} FROM ${related.join(', ')} RIGHT JOIN ${this.table} ON ${on.join(' AND ')}`;
+  async rightJoin({
+    related = [], on = [], select = ['*'], where,
+  }) {
+    const values = Object.values(where);
+    const conditions = Object.keys(where).map((value, index) => `${value} = $${index + 1}`).join(' AND ');
+
+    const query = `SELECT ${select.join(', ')} FROM ${related.join(', ')} RIGHT JOIN ${this.table} ON ${on.join(' AND ')} WHERE ${conditions}`;
 
     try {
-      const { rows } = await pool.query(query);
+      const { rows } = await pool.query(query, values);
       return rows;
     } catch (error) {
       console.log(`Erro: ${error}`);

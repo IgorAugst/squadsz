@@ -48,6 +48,7 @@ ALTER  TABLE employee
 add id_squad int,
 ADD FOREIGN KEY (id_squad) REFERENCES squad(id) ON DELETE SET NULL;
 
+CREATE TYPE priority AS ENUM ('Baixa', 'Média', 'Alta', 'Crítica');
 CREATE TYPE status AS ENUM('feito', 'para fazer', 'em progresso');
 
 CREATE TABLE project(
@@ -68,10 +69,26 @@ CREATE TABLE sprint(
     id int GENERATED ALWAYS AS IDENTITY ,
     created_at TIMESTAMP NOT NULL DEFAULT NOW(),
     id_squad int NOT NULL,
+    id_company int NOT NULL,
     goal varchar(1000),
     finished_at date,
     PRIMARY KEY (id),
-    FOREIGN KEY (id_squad) REFERENCES squad(id) ON DELETE CASCADE
+    FOREIGN KEY (id_squad) REFERENCES squad(id) ON DELETE CASCADE,
+    FOREIGN KEY (id_company) REFERENCES company(id) ON DELETE CASCADE
+);
+
+ALTER  TABLE squad
+add id_sprint int,
+ADD FOREIGN KEY (id_sprint) REFERENCES sprint(id) ON DELETE SET NULL;
+
+CREATE TABLE stage(
+    id int GENERATED ALWAYS AS IDENTITY ,
+    created_at TIMESTAMP NOT NULL DEFAULT NOW(),
+    done boolean,
+    creatable boolean,
+    name varchar(50) NOT NULL,
+    description TEXT,
+    PRIMARY KEY (id)
 );
 
 CREATE TABLE task(
@@ -79,25 +96,23 @@ CREATE TABLE task(
     created_at TIMESTAMP NOT NULL DEFAULT NOW(),
     id_sprint int NOT NULL,
     id_project int NOT NULL,
+    id_stage int NOT NULL,
     id_employee int,
-    name varchar(50) NOT NULL ,
+    name varchar(50) NOT NULL,
+    priority priority,
     description TEXT,
     points int,
-    status status,
     PRIMARY KEY (id),
     FOREIGN KEY (id_sprint) REFERENCES sprint(id) ON DELETE CASCADE,
     FOREIGN KEY (id_project) REFERENCES project(id) ON DELETE CASCADE,
-    FOREIGN KEY (id_employee) REFERENCES employee(id)
+    FOREIGN KEY (id_employee) REFERENCES employee(id),
+    FOREIGN KEY (id_stage) REFERENCES stage(id)
 );
 
-CREATE TABLE note(
-    id int GENERATED ALWAYS AS IDENTITY,
-    created_at TIMESTAMP NOT NULL DEFAULT NOW(),
-    id_task int NOT NULL,
-    id_employee int NOT NULL,
-    attachment varchar(256),
-    comment TEXT,
-    PRIMARY KEY (id),
-    FOREIGN KEY (id_task) REFERENCES task(id) ON DELETE CASCADE,
-    FOREIGN KEY (id_employee) REFERENCES employee(id) ON DELETE CASCADE
-);
+INSERT INTO stage (name, description, creatable) VALUES ('To-do', 'Tarefas para iniciar', TRUE);
+INSERT INTO stage (name, description) VALUES ('Em andamento', 'Tarefas que estão sendo feitas');
+INSERT INTO stage (name, description) VALUES ('Bloqueada', 'Tarefas que não podem ser feitas por algum motivo');
+INSERT INTO stage (name, description) VALUES ('Validação', 'Tarefas que precisam ser validadas');
+INSERT INTO stage (name, description) VALUES ('Deploy', 'Tarefas prontas para deploy');
+INSERT INTO stage (name, description, done) VALUES ('Concluída', 'Tarefas que já foram concluídas', TRUE);
+
