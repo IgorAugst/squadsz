@@ -8,12 +8,15 @@ class EmployeeController {
     const { id: idCompany } = req.headers;
 
     const squads = await Squad.findAll({ where: { id_company: idCompany } });
-    const employees = await Employee.findAll({ where: { id_company: idCompany } });
+    const employees = await Employee.findAll({
+      where: { id_company: idCompany },
+    });
 
-    const employeesMap = employees.map((employee) => {
-      const { name: squad } = squads.find(
-        ({ id: idSquad }) => idSquad === Number(employee.id_squad),
-      ) || {};
+    const employeesMap = employees.map(employee => {
+      const { name: squad } =
+        squads.find(
+          ({ id: idSquad }) => idSquad === Number(employee.id_squad)
+        ) || {};
       return {
         ...employee,
         squad,
@@ -64,7 +67,9 @@ class EmployeeController {
         id_squad: squad === '' ? null : squad,
       });
 
-      return res.status(200).json({ message: 'Funcionário atualizado com sucesso' });
+      return res
+        .status(200)
+        .json({ message: 'Funcionário atualizado com sucesso' });
     } catch (error) {
       return res.status(400).json({ message: 'Erro ao atualizar funcionário' });
     }
@@ -106,7 +111,9 @@ class EmployeeController {
         password: hash,
       });
 
-      return res.status(200).send({ message: 'Funcionário criado com sucesso' });
+      return res
+        .status(200)
+        .send({ message: 'Funcionário criado com sucesso' });
     } catch (error) {
       return res.status(400).send({ message: 'Erro ao criar o funcionário' });
     }
@@ -117,7 +124,9 @@ class EmployeeController {
 
     try {
       await Employee.delete(idEmployee);
-      return res.status(200).json({ message: 'Funcionário deletado com sucesso' });
+      return res
+        .status(200)
+        .json({ message: 'Funcionário deletado com sucesso' });
     } catch (error) {
       return res.status(400).json({ message: 'Erro ao deletar funcionário' });
     }

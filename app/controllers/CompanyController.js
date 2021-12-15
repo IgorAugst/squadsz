@@ -5,9 +5,7 @@ const { Company } = require('../models');
 
 class CompanyController {
   static async create(req, res) {
-    const {
-      name, email, cnpj, password,
-    } = req.body;
+    const { name, email, cnpj, password } = req.body;
 
     const companyCnpj = await Company.findOne({ where: { cnpj } });
     const companyEmail = await Company.findOne({ where: { email } });
@@ -55,7 +53,9 @@ class CompanyController {
         email,
         cnpj,
       });
-      return res.status(200).json({ message: 'Empresa atualizada com sucesso' });
+      return res
+        .status(200)
+        .json({ message: 'Empresa atualizada com sucesso' });
     } catch (error) {
       return res.status(400).json({ message: 'Erro ao atualizar empresa' });
     }

@@ -1,6 +1,4 @@
-const {
-  Project,
-} = require('../models');
+const { Project } = require('../models');
 
 class ProjectController {
   static async index(req, res) {
@@ -15,15 +13,13 @@ class ProjectController {
   }
 
   static async create(req, res) {
-    const {
-      name,
-      description,
-      squad,
-    } = req.body;
+    const { name, description, squad } = req.body;
 
     const { id: idCompany } = req.headers;
 
-    const project = await Project.findOne({ where: { name, id_company: idCompany } });
+    const project = await Project.findOne({
+      where: { name, id_company: idCompany },
+    });
 
     if (project) {
       return res.status(400).json({ message: 'Este projeto já existe' });
@@ -47,11 +43,11 @@ class ProjectController {
   static async update(req, res) {
     const { id: idProject } = req.params;
     const { id: idCompany } = req.headers;
-    const {
-      name, description, squad, status,
-    } = req.body;
+    const { name, description, squad, status } = req.body;
 
-    const project = await Project.findOne({ where: { name, id_company: idCompany } });
+    const project = await Project.findOne({
+      where: { name, id_company: idCompany },
+    });
     if (project && project.id !== Number(idProject)) {
       return res.status(400).json({ message: 'Este projeto já existe' });
     }
@@ -64,7 +60,9 @@ class ProjectController {
         status,
       });
 
-      return res.status(200).json({ message: 'Projeto atualizado com sucesso' });
+      return res
+        .status(200)
+        .json({ message: 'Projeto atualizado com sucesso' });
     } catch (error) {
       return res.status(400).json({ message: 'Erro ao atualizar projeto' });
     }

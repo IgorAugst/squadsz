@@ -1,6 +1,4 @@
-const {
-  Sprint, Task, Stage, Squad,
-} = require('../models');
+const { Sprint, Task, Stage, Squad } = require('../models');
 
 class SprintController {
   static async index(req, res) {
@@ -21,15 +19,17 @@ class SprintController {
 
   static async create(req, res) {
     const { id: idCompany } = req.headers;
-    const {
-      goal, squad,
-    } = req.body;
+    const { goal, squad } = req.body;
 
     try {
-      const { id_sprint: idSprint } = await Squad.findOne({ where: { id: squad } });
+      const { id_sprint: idSprint } = await Squad.findOne({
+        where: { id: squad },
+      });
 
       if (idSprint) {
-        return res.status(400).json({ message: 'Squad já possui uma sprint ativa' });
+        return res
+          .status(400)
+          .json({ message: 'Squad já possui uma sprint ativa' });
       }
 
       const sprint = await Sprint.create({
@@ -67,15 +67,17 @@ class SprintController {
       });
 
       const lists = await Stage.all();
-      const formattedLists = lists.map((list) => {
-        const cards = tasks.filter((task) => task.id_stage === list.id);
+      const formattedLists = lists.map(list => {
+        const cards = tasks.filter(task => task.id_stage === list.id);
         return {
           ...list,
           cards,
         };
       });
 
-      return res.status(200).json({ sprint: sprint[0], tasks, lists: formattedLists });
+      return res
+        .status(200)
+        .json({ sprint: sprint[0], tasks, lists: formattedLists });
     } catch (error) {
       return res.status(400).json({ message: 'Erro ao carregar a sprint' });
     }

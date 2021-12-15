@@ -1,6 +1,10 @@
 const pg = require('pg');
 const {
-  POSTGRES_USER, POSTGRES_HOST, POSTGRES_DB, POSTGRES_PASSWORD, POSTGRES_PORT,
+  POSTGRES_USER,
+  POSTGRES_HOST,
+  POSTGRES_DB,
+  POSTGRES_PASSWORD,
+  POSTGRES_PORT,
 } = require('../config/base');
 
 const pool = new pg.Pool({

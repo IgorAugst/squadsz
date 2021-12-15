@@ -19,7 +19,9 @@ class ORM {
   async create(obj) {
     const values = Object.values(obj);
     const fields = Object.keys(obj).join(', ');
-    const indexes = Object.keys(obj).map((value, index) => `$${index + 1}`).join(', ');
+    const indexes = Object.keys(obj)
+      .map((value, index) => `$${index + 1}`)
+      .join(', ');
 
     const query = `INSERT INTO ${this.table} (${fields}) VALUES (${indexes}) RETURNING *`;
 
@@ -34,9 +36,13 @@ class ORM {
 
   async update(id, obj) {
     const values = Object.values(obj);
-    const fields = Object.keys(obj).map((value, index) => `${value} = $${index + 1}`).join(', ');
+    const fields = Object.keys(obj)
+      .map((value, index) => `${value} = $${index + 1}`)
+      .join(', ');
 
-    const query = `UPDATE ${this.table} SET ${fields} WHERE id = $${values.length + 1} RETURNING *`;
+    const query = `UPDATE ${this.table} SET ${fields} WHERE id = $${
+      values.length + 1
+    } RETURNING *`;
 
     try {
       const { rows } = await pool.query(query, [...values, id]);
@@ -49,9 +55,13 @@ class ORM {
 
   async findOne({ select = ['*'], where }) {
     const values = Object.values(where);
-    const conditions = Object.keys(where).map((value, index) => `${value} = $${index + 1}`).join(' AND ');
+    const conditions = Object.keys(where)
+      .map((value, index) => `${value} = $${index + 1}`)
+      .join(' AND ');
 
-    const query = `SELECT ${select.join(', ')} FROM ${this.table} WHERE ${conditions}`;
+    const query = `SELECT ${select.join(', ')} FROM ${
+      this.table
+    } WHERE ${conditions}`;
 
     try {
       const { rows } = await pool.query(query, values);
@@ -64,9 +74,13 @@ class ORM {
 
   async findAll({ select = ['*'], where }) {
     const values = Object.values(where);
-    const conditions = Object.keys(where).map((value, index) => `${value} = $${index + 1}`).join(' AND ');
+    const conditions = Object.keys(where)
+      .map((value, index) => `${value} = $${index + 1}`)
+      .join(' AND ');
 
-    const query = `SELECT ${select.join(', ')} FROM ${this.table} WHERE ${conditions}`;
+    const query = `SELECT ${select.join(', ')} FROM ${
+      this.table
+    } WHERE ${conditions}`;
 
     try {
       const { rows } = await pool.query(query, values);
@@ -101,13 +115,15 @@ class ORM {
     }
   }
 
-  async rightJoin({
-    related = [], on = [], select = ['*'], where,
-  }) {
+  async rightJoin({ related = [], on = [], select = ['*'], where }) {
     const values = Object.values(where);
-    const conditions = Object.keys(where).map((value, index) => `${value} = $${index + 1}`).join(' AND ');
+    const conditions = Object.keys(where)
+      .map((value, index) => `${value} = $${index + 1}`)
+      .join(' AND ');
 
-    const query = `SELECT ${select.join(', ')} FROM ${related.join(', ')} RIGHT JOIN ${this.table} ON ${on.join(' AND ')} WHERE ${conditions}`;
+    const query = `SELECT ${select.join(', ')} FROM ${related.join(
+      ', '
+    )} RIGHT JOIN ${this.table} ON ${on.join(' AND ')} WHERE ${conditions}`;
 
     try {
       const { rows } = await pool.query(query, values);

@@ -1,6 +1,4 @@
-const {
-  Squad, Employee, Project,
-} = require('../models');
+const { Squad, Employee, Project } = require('../models');
 
 class SquadController {
   static async index(req, res) {
@@ -12,22 +10,24 @@ class SquadController {
     });
 
     const squads = await Promise.all(
-      rowsSquads.map(async (squad) => {
-        const employees = (await Employee.findAll({
-          select: ['COUNT(*)'],
-          where: { id_squad: squad.id },
-        })) || {};
-        const projects = (await Project.findAll({
-          select: ['COUNT(*)'],
-          where: { id_squad: squad.id },
-        })) || {};
+      rowsSquads.map(async squad => {
+        const employees =
+          (await Employee.findAll({
+            select: ['COUNT(*)'],
+            where: { id_squad: squad.id },
+          })) || {};
+        const projects =
+          (await Project.findAll({
+            select: ['COUNT(*)'],
+            where: { id_squad: squad.id },
+          })) || {};
 
         return {
           ...squad,
           employees: employees[0].count,
           projects: projects[0].count,
         };
-      }),
+      })
     );
 
     return res.status(200).json(squads);
@@ -38,7 +38,9 @@ class SquadController {
 
     try {
       const squad = await Squad.find(idSquad);
-      const employees = await Employee.findAll({ where: { id_squad: idSquad } });
+      const employees = await Employee.findAll({
+        where: { id_squad: idSquad },
+      });
       const projects = await Project.findAll({ where: { id_squad: idSquad } });
       return res.status(200).json({ employees, squad, projects });
     } catch (error) {
@@ -80,11 +82,15 @@ class SquadController {
     });
 
     if (squads) {
-      return res.status(400).json({ message: 'Já existe um squad com esse nome' });
+      return res
+        .status(400)
+        .json({ message: 'Já existe um squad com esse nome' });
     }
 
     if (name.length < 3) {
-      return res.status(400).json({ message: 'O nome deve ter mais de 3 caracteres' });
+      return res
+        .status(400)
+        .json({ message: 'O nome deve ter mais de 3 caracteres' });
     }
 
     try {
